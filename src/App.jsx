@@ -13,6 +13,7 @@ import GuestSheet from './components/GuestSheet'
 export default function App() {
   const [started, setStarted] = useState(false) // 是否已通過啟動畫面
   const [me, setMe] = useState(null)        // 目前登入的來賓
+  const [entering, setEntering] = useState(false) // 入場動畫進行中
   const [tab, setTab] = useState('profile') // 目前分頁
   const [sheet, setSheet] = useState(null)  // sheet 顯示的來賓
   const [morphId, setMorphId] = useState(null) // 轉場中參與 morph 的卡片 id
@@ -66,10 +67,10 @@ export default function App() {
   }
 
   if (!started) return <Splash onStart={() => setStarted(true)} />
-  if (!me) return <Gate onEnter={setMe} />
+  if (!me) return <Gate onEnter={(p) => { setMe(p); setEntering(true) }} />
 
   return (
-    <div className="app">
+    <div className={`app${entering ? ' enter' : ''}`} onAnimationEnd={() => setEntering(false)}>
       <div className={`scroll${bingoPlaying ? ' scroll-fullscreen' : ''}`} ref={scrollRef}>
         {tab === 'profile' && <Profile me={me} />}
         {tab === 'guests' && <Guests onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}

@@ -120,12 +120,20 @@ body::after {
 }
 
 @keyframes splash-reveal-grow {
-  from { transform: translate(-50%, -50%) scale(0); }
-  to   { transform: translate(-50%, -50%) scale(1); }
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .splash-reveal { animation: none; display: none; }
+  .splash-reveal {
+    animation: none;
+    display: none;
+  }
 }
 
 .splash-hi {
@@ -221,9 +229,17 @@ body::after {
 }
 
 @keyframes char-wiggle {
-  0%   { transform: rotate(-0.5deg) translateY(0) }
-  50%  { transform: rotate(0.5deg) translateY(-1.5px) }
-  100% { transform: rotate(-0.5deg) translateY(0) }
+  0% {
+    transform: rotate(-0.5deg) translateY(0)
+  }
+
+  50% {
+    transform: rotate(0.5deg) translateY(-1.5px)
+  }
+
+  100% {
+    transform: rotate(-0.5deg) translateY(0)
+  }
 }
 
 .splash-char img {
@@ -441,7 +457,6 @@ body::after {
 }
 
 .pin-wrap {
-  margin-top: 46px;
   width: 100%;
   max-width: 320px;
   opacity: 0;
@@ -485,7 +500,38 @@ body::after {
   background: var(--btn);
   border-color: var(--btn);
   box-shadow: 0 0 14px rgba(128, 66, 32, .4);
-  transform: scale(1.05)
+  transform: scale(1.05);
+  animation: dot-fill .35s cubic-bezier(.34, 1.56, .64, 1)
+}
+
+@keyframes dot-fill {
+  0% { transform: scale(0); background: transparent; border-color: var(--line2) }
+  50% { background: var(--btn); border-color: var(--btn) }
+  100% { transform: scale(1.05) }
+}
+
+.gate-circle {
+  --radius: 0px;
+  position: fixed;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--btn);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%)
+}
+
+.gate-circle.go {
+  animation: circle-expand .9s cubic-bezier(.4, 0, .2, 1) forwards
+}
+
+@keyframes circle-expand {
+  0% { width: 0; height: 0 }
+  100% {
+    width: calc(var(--radius) * 2);
+    height: calc(var(--radius) * 2)
+  }
 }
 
 .pin-err {
@@ -635,6 +681,25 @@ body::after {
 
 .screen {
   animation: fade .45s
+}
+
+/* 入場動畫：tabbar 先滑上，profile card 接著滑上 */
+.app.enter .tabbar {
+  animation: slide-up .8s cubic-bezier(.22, 1, .36, 1) both
+}
+
+.app.enter .screen {
+  animation: slide-up-card .85s cubic-bezier(.22, 1, .36, 1) .35s both
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0 }
+  to { transform: translateY(0); opacity: 1 }
+}
+
+@keyframes slide-up-card {
+  from { transform: translateY(60px); opacity: 0 }
+  to { transform: translateY(0); opacity: 1 }
 }
 
 .kicker {
@@ -1285,11 +1350,25 @@ body::after {
    source 元素的 z-index 控制。改為直接在群組伪元素上設 z-index 強制排序：
    root（其他卡片/頁面，底）< 遮罩 < sheet 框 < 細節 < 頭像/名字。
    這樣展開中的卡/sheet 永遠在遮罩之上，其他卡片在遮罩之下被壓暗。 */
-::view-transition-group(g-backdrop)    { z-index: 1 }
-::view-transition-group(g-active-box)  { z-index: 2 }
-::view-transition-group(g-details)     { z-index: 3 }
-::view-transition-group(g-active-av)   { z-index: 4 }
-::view-transition-group(g-active-name) { z-index: 4 }
+::view-transition-group(g-backdrop) {
+  z-index: 1
+}
+
+::view-transition-group(g-active-box) {
+  z-index: 2
+}
+
+::view-transition-group(g-details) {
+  z-index: 3
+}
+
+::view-transition-group(g-active-av) {
+  z-index: 4
+}
+
+::view-transition-group(g-active-name) {
+  z-index: 4
+}
 
 /* 遮罩自成一組：模糊只在這一層處理，root 全頁快照維持便宜不頓；
    並柔和淡入，避免遮罩「瞬間出現」。 */

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { people } from '../data/payload'
 import { useKey, usePop } from '../hooks/useSfx'
 import logoImg from '../asset/logo_m310.png'
@@ -12,17 +12,42 @@ export default function Gate({ onEnter }) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState(false)
   const [shake, setShake] = useState(false)
+  const [expanding, setExpanding] = useState(false)
+  const btnRef = useRef(null)
+  const circleRef = useRef(null)
+  const foundRef = useRef(null)
 
   const submit = useCallback((value) => {
     const found = people.find((p) => p.pin === value)
     if (found) {
-      onEnter(found)
+      foundRef.current = found
+      // 取得按鈕中心位置，從那裡展開圓圈
+      const btn = btnRef.current
+      const rect = btn.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      // 計算需要多大的半徑才能覆蓋整個螢幕
+      const maxDist = Math.max(
+        Math.hypot(cx, cy),
+        Math.hypot(window.innerWidth - cx, cy),
+        Math.hypot(cx, window.innerHeight - cy),
+        Math.hypot(window.innerWidth - cx, window.innerHeight - cy)
+      )
+      const circle = circleRef.current
+      circle.style.left = cx + 'px'
+      circle.style.top = cy + 'px'
+      circle.style.setProperty('--radius', maxDist + 'px')
+      setExpanding(true)
     } else {
       setError(true)
       setShake(true)
       setTimeout(() => setShake(false), 440)
       setPin('')
     }
+  }, [])
+
+  const handleCircleEnd = useCallback(() => {
+    if (foundRef.current) onEnter(foundRef.current)
   }, [onEnter])
 
   const press = useCallback((k) => {
@@ -68,6 +93,7 @@ export default function Gate({ onEnter }) {
           ))}
         </div>
         <button
+          ref={btnRef}
           className="gate-submit"
           onClick={confirm}
           disabled={pin.length !== 4}
@@ -76,6 +102,11 @@ export default function Gate({ onEnter }) {
           <span className="cta-front">報到完成</span>
         </button>
       </div>
+      <div
+        ref={circleRef}
+        className={`gate-circle${expanding ? ' go' : ''}`}
+        onAnimationEnd={handleCircleEnd}
+      />
     </section>
   )
 }
