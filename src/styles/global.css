@@ -214,7 +214,16 @@ body::after {
   /* 讓角色可以出血到容器外（左右 + 底部） */
   margin-left: calc(-24px - env(safe-area-inset-left));
   margin-right: calc(-48px - env(safe-area-inset-right));
-  margin-bottom: calc(-64px - var(--safe-b))
+  margin-bottom: calc(-64px - var(--safe-b));
+  /* 入場後輕微搖擺：以腳底為軸極小幅度晃動，等人物升起完成才開始 */
+  transform-origin: bottom center;
+  animation: char-wiggle 5.5s ease-in-out 1.3s infinite
+}
+
+@keyframes char-wiggle {
+  0%   { transform: rotate(-0.5deg) translateY(0) }
+  50%  { transform: rotate(0.5deg) translateY(-1.5px) }
+  100% { transform: rotate(-0.5deg) translateY(0) }
 }
 
 .splash-char img {
