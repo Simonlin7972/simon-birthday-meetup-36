@@ -4,8 +4,10 @@
   --gold:#e7b667; --gold-bright:#f6d28c; --rose:#d98a7a;
   --surface:rgba(255,255,255,.045); --surface2:rgba(255,255,255,.07);
   --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.14);
-  --sans:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",system-ui,sans-serif;
-  --serif:"Songti TC","Georgia","Times New Roman",serif;
+  /* 內文：中英文皆用圓體 ChironGoRoundTC，維持長文可讀性 */
+  --sans:"ChironGoRoundTC",-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",system-ui,sans-serif;
+  /* 展示／標題：英文走粗黑 Archivo Black，中文回退到圓體 ChironGoRoundTC */
+  --serif:"Archivo Black","ChironGoRoundTC","PingFang TC","Noto Sans TC",sans-serif;
   --safe-b:env(safe-area-inset-bottom);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
