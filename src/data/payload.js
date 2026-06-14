@@ -335,3 +335,19 @@ export const people = [
     fromSimon: '',
   },
 ]
+
+// 自動載入 src/asset/guest 下的來賓頭像，依檔名（不含副檔名）對應 name，
+// 套用到「我的卡」與「來賓」頁面（透過 Avatar 的 person.photo）。
+const guestPhotos = import.meta.glob('../asset/guest/*.{jpg,jpeg,png,JPG,PNG}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+})
+const photoByName = {}
+for (const path in guestPhotos) {
+  const base = path.split('/').pop().replace(/\.[^.]+$/, '')
+  photoByName[base] = guestPhotos[path]
+}
+for (const p of people) {
+  if (!p.photo && photoByName[p.name]) p.photo = photoByName[p.name]
+}

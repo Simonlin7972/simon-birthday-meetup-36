@@ -16,7 +16,7 @@ export default function GuestSheet({ guest, onClose }) {
             </div>
             {guest.intro && <div className="sh-intro">{guest.intro}</div>}
             <Field label="怎麼認識 Simon" value={guest.howMet} />
-            <Field label="認識多久" value={guest.howLong} />
+            <Field label="跟 Simon 認識多久" value={guest.howLong} />
             <Field label={`在 ${guest.name} 心中，Simon 是`} value={guest.simonIs} />
             <Field label="觀察到 Simon 最大的改變" value={guest.change} />
           </>

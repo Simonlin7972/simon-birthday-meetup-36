@@ -12,7 +12,7 @@ export default function Profile({ me }) {
       </div>
       <div className="pf-divider" />
       <Field label="怎麼認識 Simon" value={me.howMet} />
-      <Field label="認識多久" value={me.howLong} />
+      <Field label="跟 Simon 認識多久" value={me.howLong} />
       <Field label="Simon 在你心中" value={me.simonIs} />
       <Field label="你觀察到 Simon 最大的改變" value={me.change} />
     </div>
