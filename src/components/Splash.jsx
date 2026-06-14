@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { config } from '../data/payload'
 import { usePop } from '../hooks/useSfx'
 import charImg from '../asset/simon_char.png'
@@ -10,6 +11,16 @@ export default function Splash({ onStart }) {
   const pop = usePop()
   // 第二行「Simon 的生日小聚」打字機效果，等進場動畫後才開始打字。
   const typed = useTypewriter('Simon 的生日小聚', { speed: 130, delay: 900 })
+  // 轉場：橘色圓形從點擊處放大覆蓋全畫面，動畫結束後進入 Gate。
+  const [reveal, setReveal] = useState(null) // null | {x, y}
+
+  const handleStart = (e) => {
+    pop()
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce) { onStart(); return }
+    const rect = e.currentTarget.getBoundingClientRect()
+    setReveal({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
+  }
 
   return (
     <section className="splash">
@@ -40,7 +51,7 @@ export default function Splash({ onStart }) {
 
       <img className="splash-logo" src={logoImg} alt="M310" draggable="false" />
 
-      <button className="splash-cta" onClick={() => { pop(); onStart() }}>
+      <button className="splash-cta" onClick={handleStart} disabled={!!reveal}>
         <span className="cta-edge" />
         <span className="cta-front">
           馬上進入會場
@@ -49,6 +60,14 @@ export default function Splash({ onStart }) {
           </svg>
         </span>
       </button>
+
+      {reveal && (
+        <span
+          className="splash-reveal"
+          style={{ left: reveal.x, top: reveal.y }}
+          onAnimationEnd={onStart}
+        />
+      )}
     </section>
   )
 }

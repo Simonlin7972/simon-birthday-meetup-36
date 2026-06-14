@@ -104,6 +104,30 @@ body::after {
   flex-shrink: 0
 }
 
+/* 轉場：橘色圓形從點擊處放大覆蓋全畫面，動畫結束後切換到 Gate */
+.splash-reveal {
+  position: fixed;
+  z-index: 50;
+  /* 直徑用 vmax，確保任何長寬比都能蓋滿畫面 */
+  width: 260vmax;
+  height: 260vmax;
+  border-radius: 50%;
+  background: var(--btn);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  will-change: transform;
+  animation: splash-reveal-grow 620ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes splash-reveal-grow {
+  from { transform: translate(-50%, -50%) scale(0); }
+  to   { transform: translate(-50%, -50%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-reveal { animation: none; display: none; }
+}
+
 .splash-hi {
   display: block;
   width: min(100vw, 510px);
@@ -348,7 +372,7 @@ body::after {
   font-weight: 600;
   margin-bottom: 22px;
   opacity: 0;
-  animation: rise .8s .1s forwards
+  animation: rise .45s .02s forwards
 }
 
 .gate-title {
@@ -377,15 +401,15 @@ body::after {
 .gate-title .l1,
 .gate-title .l2 {
   opacity: 0;
-  animation: rise .9s forwards
+  animation: rise .45s forwards
 }
 
 .gate-title .l1 {
-  animation-delay: .2s
+  animation-delay: .06s
 }
 
 .gate-title .l2 {
-  animation-delay: .34s
+  animation-delay: .12s
 }
 
 .gate-sub {
@@ -395,7 +419,7 @@ body::after {
   color: var(--muted);
   margin-top: 18px;
   opacity: 0;
-  animation: rise .9s .48s forwards
+  animation: rise .45s .18s forwards
 }
 
 .gate-meta {
@@ -404,7 +428,7 @@ body::after {
   margin-top: 8px;
   letter-spacing: .06em;
   opacity: 0;
-  animation: rise .9s .56s forwards
+  animation: rise .45s .22s forwards
 }
 
 .pin-wrap {
@@ -412,7 +436,7 @@ body::after {
   width: 100%;
   max-width: 320px;
   opacity: 0;
-  animation: rise .9s .7s forwards
+  animation: rise .45s .28s forwards
 }
 
 .pin-logo {
