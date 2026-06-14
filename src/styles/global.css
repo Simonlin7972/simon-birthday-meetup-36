@@ -80,6 +80,7 @@ body::after {
 
 /* ---------- SPLASH ---------- */
 .splash {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -98,21 +99,24 @@ body::after {
 
 .splash-hi {
   display: block;
-  width: min(78vw, 320px);
+  width: min(100vw, 510px);
   height: auto;
-  margin: 0 auto 10px;
+  margin: 18px auto 10px;
   overflow: visible;
   opacity: 0;
   animation: rise .8s .2s forwards
 }
 
 .splash-hi text {
-  font-family: var(--sans);
-  font-size: 56px;
-  font-weight: 700;
-  letter-spacing: .04em;
+  font-family: var(--serif);
+  font-size: 46px;
+  font-weight: 900;
+  letter-spacing: .02em;
   text-transform: uppercase;
-  fill: var(--gold)
+  fill: var(--gold);
+  stroke: var(--gold);
+  stroke-width: 2px;
+  paint-order: stroke
 }
 
 .splash-title {
@@ -124,6 +128,39 @@ body::after {
   color: var(--ink);
   opacity: 0;
   animation: rise .9s .34s forwards
+}
+
+/* 打字機游標：以最後一筆收尾，打完後仍緩慢閃爍，可加 .done 隱藏 */
+.tw {
+  display: inline-block;
+  min-height: 1.2em
+}
+
+.tw-caret {
+  display: inline-block;
+  width: .06em;
+  height: 1em;
+  margin-left: .06em;
+  vertical-align: -.12em;
+  background: currentColor;
+  animation: tw-blink 1s steps(1) infinite
+}
+
+.tw-caret.done {
+  animation-duration: 1.4s
+}
+
+@keyframes tw-blink {
+
+  0%,
+  50% {
+    opacity: 1
+  }
+
+  50.01%,
+  100% {
+    opacity: 0
+  }
 }
 
 .splash-meta {
@@ -164,6 +201,34 @@ body::after {
   animation: char-rise 1s .15s cubic-bezier(.2, .8, .2, 1) forwards
 }
 
+/* M310 logo：絕對定位漂浮在按鈕上方一點點，無限慢速旋轉。
+   用 absolute 脫離排版流，才不會壓縮到 flex:1 的人物。 */
+.splash-logo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  bottom: calc(env(safe-area-inset-bottom) + 108px);
+  z-index: 3;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  opacity: 0;
+  animation: rise .9s .7s forwards, spin 9s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg)
+  }
+
+  to {
+    transform: rotate(360deg)
+  }
+}
+
 /* Duolingo 風 3D 按鈕：靜止的 edge（側壁）+ 浮起的 front（正面）。
    按下時 front 往下壓進 edge，露出的側壁變短 → 真正「壓下去」的位移。 */
 .splash-cta {
@@ -200,6 +265,7 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   position: relative;
   height: 58px;
   border-radius: 18px;
@@ -214,8 +280,20 @@ body::after {
   transition: transform .12s cubic-bezier(.3, .7, .4, 1)
 }
 
+.cta-arrow {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  flex-shrink: 0;
+  transition: transform .18s cubic-bezier(.3, .7, .4, 1)
+}
+
 .splash-cta:hover .cta-front {
   transform: translateY(-9px)
+}
+
+.splash-cta:hover .cta-arrow {
+  transform: translateX(4px)
 }
 
 .splash-cta:active .cta-front {
@@ -230,7 +308,7 @@ body::after {
   }
 
   to {
-    transform: translateY(0);
+    transform: translateY(140px);
     opacity: 1
   }
 }
@@ -323,31 +401,31 @@ body::after {
 }
 
 .pin-hint {
-  font-size: 13px;
+  font-size: 18px;
   color: var(--muted);
-  margin-bottom: 18px;
+  margin-bottom: 22px;
   letter-spacing: .04em
 }
 
 .pin-dots {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   margin-bottom: 6px
 }
 
 .pin-dot {
-  width: 13px;
-  height: 13px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 1.5px solid var(--line2);
+  border: 2.5px solid var(--line2);
   transition: .25s
 }
 
 .pin-dot.on {
-  background: var(--gold);
-  border-color: var(--gold);
-  box-shadow: 0 0 14px rgba(232, 139, 58, .45);
+  background: #804220;
+  border-color: #804220;
+  box-shadow: 0 0 14px rgba(128, 66, 32, .4);
   transform: scale(1.05)
 }
 
@@ -376,8 +454,36 @@ body::after {
   margin-top: 14px
 }
 
+/* Duolingo 風立體按鍵：::before 當固定側壁，.key-face 浮在上面，按下時壓進去 */
 .key {
+  position: relative;
   height: 62px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation
+}
+
+.key::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: var(--bg)
+}
+
+.key-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
   border-radius: 16px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -385,30 +491,31 @@ body::after {
   font-size: 24px;
   font-weight: 300;
   font-family: var(--serif);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: .12s;
-  user-select: none;
-  box-shadow: 0 1px 0 rgba(74, 51, 34, .06)
+  transform: translateY(-5px);
+  will-change: transform;
+  transition: transform .1s cubic-bezier(.3, .7, .4, 1)
 }
 
-.key:active {
-  background: var(--surface2);
-  transform: scale(.95)
+.key:active .key-face {
+  transform: translateY(-1px);
+  transition: transform .04s
 }
 
-.key.fn {
+/* 功能鍵（清除 / ⌫）維持扁平，只跟著對齊，不做立體 */
+.key.fn::before {
+  display: none
+}
+
+.key.fn .key-face {
   font-size: 14px;
   font-family: var(--sans);
   color: var(--muted);
   background: transparent;
   border-color: transparent;
-  box-shadow: none
+  transform: translateY(-5px)
 }
 
-.key.fn:active {
+.key.fn:active .key-face {
   background: var(--surface)
 }
 
@@ -774,11 +881,9 @@ body::after {
 }
 
 .tab svg {
-  width: 23px;
-  height: 23px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.6
+  width: 24px;
+  height: 24px;
+  fill: currentColor
 }
 
 .tab.active {

@@ -50,7 +50,9 @@ export default function Gate({ onEnter }) {
               className={`key${k === 'clear' || k === 'del' ? ' fn' : ''}`}
               onClick={() => press(k)}
             >
-              {k === 'clear' ? '清除' : k === 'del' ? '⌫' : k}
+              <span className="key-face">
+                {k === 'clear' ? '清除' : k === 'del' ? '⌫' : k}
+              </span>
             </button>
           ))}
         </div>
