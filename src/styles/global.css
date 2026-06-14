@@ -23,6 +23,9 @@
   --line: rgba(74, 51, 34, .12);
   --line2: rgba(74, 51, 34, .22);
   --ink-line: #1e1a17;
+  /* 卡片：統一圓角與立體陰影 */
+  --card-radius: 20px;
+  --card-shadow: 5px 5px 0 rgba(30, 26, 23, .06);
 
   --sans: "ChironGoRoundTC", -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", system-ui, sans-serif;
   --serif: "Archivo Black", "ChironGoRoundTC", "PingFang TC", "Noto Sans TC", sans-serif;
@@ -615,13 +618,17 @@ body::after {
 }
 
 /* profile */
+/* 共用卡片容器：背景 + 統一圓角 + 統一立體陰影 */
+.card {
+  background: var(--surface);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow)
+}
+
 /* 我的卡：整頁內容包進一張卡片容器 */
 .pf-card {
-  background: var(--surface);
-  border-radius: 22px;
   padding: 28px 22px;
-  margin-top: 4px;
-  box-shadow: 5px 5px 0 rgba(30, 26, 23, .2)
+  margin-top: 4px
 }
 
 .pf-hero {
@@ -771,15 +778,12 @@ body::after {
   flex-shrink: 0;
   width: 79vw;
   max-width: 330px;
-  background: var(--surface);
-  border-radius: 22px;
   padding: 24px 22px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   transition: .18s;
-  min-height: 248px;
-  box-shadow: 5px 5px 0 rgba(30, 26, 23, .2)
+  min-height: 248px
 }
 
 .gcard:active {
@@ -983,12 +987,9 @@ body::after {
 }
 
 .wcard {
-  background: var(--surface);
-  border-radius: 18px;
   padding: 18px 18px 16px;
   margin-bottom: 14px;
-  break-inside: avoid;
-  box-shadow: 4px 4px 0 rgba(30, 26, 23, .18)
+  break-inside: avoid
 }
 
 .wc-head {
@@ -1472,8 +1473,15 @@ body::after {
 }
 
 @keyframes bingo-pop {
-  0% { transform: scale(.3); opacity: 0 }
-  100% { transform: scale(1); opacity: 1 }
+  0% {
+    transform: scale(.3);
+    opacity: 0
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1
+  }
 }
 
 /* confetti */
@@ -1496,8 +1504,17 @@ body::after {
 }
 
 @keyframes confetti-fall {
-  0% { top: -20px; opacity: 1; transform: rotate(var(--rot)) }
-  100% { top: 110vh; opacity: 0; transform: rotate(calc(var(--rot) + 720deg)) translateX(30px) }
+  0% {
+    top: -20px;
+    opacity: 1;
+    transform: rotate(var(--rot))
+  }
+
+  100% {
+    top: 110vh;
+    opacity: 0;
+    transform: rotate(calc(var(--rot) + 720deg)) translateX(30px)
+  }
 }
 
 @media (prefers-reduced-motion:reduce) {
