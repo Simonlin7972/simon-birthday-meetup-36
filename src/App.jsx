@@ -17,12 +17,14 @@ export default function App() {
   const [sheet, setSheet] = useState(null)  // sheet 顯示的來賓
   const [morphId, setMorphId] = useState(null) // 轉場中參與 morph 的卡片 id
   const [bingoKey, setBingoKey] = useState(0)
+  const [bingoPlaying, setBingoPlaying] = useState(false) // 賓果遊戲進行中 → 隱藏 bottom bar
   const scrollRef = useRef(null)
   const bingoTapsRef = useRef([])
 
-  // 切換分頁時收合 sheet 並回到頂端
+  // 切換分頁時收合 sheet、回到頂端，並離開賓果遊戲畫面
   useEffect(() => {
     setSheet(null)
+    setBingoPlaying(false)
     if (scrollRef.current) scrollRef.current.scrollTop = 0
   }, [tab])
 
@@ -68,14 +70,14 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="scroll" ref={scrollRef}>
+      <div className={`scroll${bingoPlaying ? ' scroll-fullscreen' : ''}`} ref={scrollRef}>
         {tab === 'profile' && <Profile me={me} />}
         {tab === 'guests' && <Guests onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}
         {tab === 'message' && <Message me={me} />}
         {tab === 'wall' && <Wall />}
-        {tab === 'bingo' && <Bingo key={bingoKey} me={me} />}
+        {tab === 'bingo' && <Bingo key={bingoKey} me={me} onPlayingChange={setBingoPlaying} />}
       </div>
-      <TabBar active={tab} onChange={handleTab} />
+      {!bingoPlaying && <TabBar active={tab} onChange={handleTab} />}
       <GuestSheet guest={sheet} onClose={closeGuest} />
     </div>
   )

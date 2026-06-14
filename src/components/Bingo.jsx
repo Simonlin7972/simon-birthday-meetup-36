@@ -38,10 +38,64 @@ function hashId(id) {
 
 const CONFETTI_COLORS = ['#e88b3a', '#f0a45a', '#c75b3f', '#804220', '#4a3322', '#f5ecdd']
 
-export default function Bingo({ me }) {
+// 進入遊戲的通關密碼。
+const CODE = '0000'
+
+export default function Bingo({ me, onPlayingChange = () => {} }) {
   const pop = usePop()
   const storageKey = `bingo_${me.id}`
   const inputRef = useRef(null)
+
+  // 第一頁：標題＋描述＋PIN，通過後才正式進入遊戲畫面。遊戲紀錄始終保存在 localStorage。
+  const [playing, setPlaying] = useState(false)
+  const [digits, setDigits] = useState(['', '', '', ''])
+  const [gateError, setGateError] = useState(false)
+  const [shake, setShake] = useState(false)
+  const gateRefs = [useRef(null), useRef(null), useRef(null), useRef(null)]
+
+  const enterGame = () => { setPlaying(true); onPlayingChange(true) }
+  const exitGame = () => {
+    setPlaying(false)
+    onPlayingChange(false)
+    setDigits(['', '', '', ''])
+    setGateError(false)
+  }
+
+  const submitCode = (value) => {
+    if (value === CODE) {
+      enterGame()
+    } else {
+      setGateError(true)
+      setShake(true)
+      setTimeout(() => setShake(false), 440)
+      setDigits(['', '', '', ''])
+      gateRefs[0].current?.focus()
+    }
+  }
+
+  const handleDigit = (i, raw) => {
+    const v = raw.replace(/\D/g, '').slice(-1)
+    setGateError(false)
+    setDigits((prev) => {
+      const next = [...prev]
+      next[i] = v
+      if (v && i < 3) gateRefs[i + 1].current?.focus()
+      if (next.every((d) => d !== '')) setTimeout(() => submitCode(next.join('')), 140)
+      return next
+    })
+  }
+
+  const handleGateKey = (i, e) => {
+    if (e.key === 'Backspace' && !digits[i] && i > 0) {
+      e.preventDefault()
+      gateRefs[i - 1].current?.focus()
+      setDigits((prev) => {
+        const next = [...prev]
+        next[i - 1] = ''
+        return next
+      })
+    }
+  }
 
   const [order] = useState(() => {
     const saved = localStorage.getItem(storageKey)
@@ -101,10 +155,41 @@ export default function Bingo({ me }) {
 
   const completedCount = cells.filter(Boolean).length
 
+  // 第一頁：通關密碼門
+  if (!playing) {
+    return (
+      <div className="screen">
+        <div className="msg-gate">
+          <div className="msg-gate-mark">🎯</div>
+          <div className="msg-gate-title">派對賓果</div>
+          <div className="bingo-gate-desc">和現場朋友互動，完成任務連成兩條線就 BINGO！輸入通關密碼開始遊戲。</div>
+          <div className={`code-boxes${shake ? ' shake' : ''}`}>
+            {digits.map((d, i) => (
+              <input
+                key={i}
+                ref={gateRefs[i]}
+                className={`code-box${d ? ' filled' : ''}`}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={d}
+                onChange={(e) => handleDigit(i, e.target.value)}
+                onKeyDown={(e) => handleGateKey(i, e)}
+                onFocus={(e) => e.target.select()}
+                aria-label={`密碼第 ${i + 1} 碼`}
+              />
+            ))}
+          </div>
+          <div className={`code-err${gateError ? ' show' : ''}`}>密碼不對，再試一次 🤔</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="screen screen-bingo">
-      <div className="h-title h-title-bold">派對賓果</div>
-      <div className="h-sub">和現場朋友互動，完成任務連成兩條線就 BINGO！</div>
+      <button className="bingo-exit" onClick={exitGame}>離開遊戲</button>
 
       <div className="bingo-status">
         <span>{completedCount}/9 完成</span>

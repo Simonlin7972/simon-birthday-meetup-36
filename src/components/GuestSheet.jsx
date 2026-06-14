@@ -14,7 +14,6 @@ export default function GuestSheet({ guest, onClose }) {
         className={`sheet${guest ? ' show' : ''}`}
         style={guest ? { viewTransitionName: 'g-active-box' } : undefined}
       >
-        <div className="sheet-handle" />
         {guest && (
           <>
             <button className="sh-close" onClick={onClose} aria-label="關閉">
@@ -22,6 +21,7 @@ export default function GuestSheet({ guest, onClose }) {
                 <path d="M6 6 18 18 M18 6 6 18" />
               </svg>
             </button>
+            <div className="sheet-handle" />
             <div className="sh-hero">
               <Avatar person={guest} vt="g-active-av" />
               <div className="sh-name" style={{ viewTransitionName: 'g-active-name' }}>{guest.name}</div>
