@@ -196,7 +196,7 @@ body::after {
 .splash-char img {
   /* 寬度驅動：人物比例固定吃 viewport 寬度，不再被 flex 容器的剩餘高度壓縮，
      小螢幕也能維持與大螢幕一致的大小，多出來的高度往上出血並被 .splash 裁切。 */
-  width: min(128vw, 620px);
+  width: min(100vw, 480px);
   height: auto;
   max-width: none;
   object-fit: contain;
@@ -212,7 +212,7 @@ body::after {
 /* 小裝置：人物再縮約 90%（128vw → 115vw），避免在窄螢幕顯得過大 */
 @media (max-width: 400px) {
   .splash-char img {
-    width: min(115vw, 620px)
+    width: min(90vw, 480px)
   }
 }
 
@@ -1099,6 +1099,7 @@ body::after {
   transition: .25s
 }
 
+
 .sheet-bg.show {
   opacity: 1;
   pointer-events: auto
@@ -1158,6 +1159,79 @@ body::after {
   color: var(--muted);
   line-height: 1.7;
   margin: 14px 0 4px
+}
+
+/* ---------- 共享元素轉場（小卡 ↔ sheet, View Transitions API） ---------- */
+/* 全域節奏對齊 sheet 既有的進場曲線 */
+::view-transition-group(*) {
+  animation-duration: .34s;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+
+/* 堆疊順序：VT 群組畫在獨立圖層，預設依「捕捉時 paint order」排序，無法靠
+   source 元素的 z-index 控制。改為直接在群組伪元素上設 z-index 強制排序：
+   root（其他卡片/頁面，底）< 遮罩 < sheet 框 < 細節 < 頭像/名字。
+   這樣展開中的卡/sheet 永遠在遮罩之上，其他卡片在遮罩之下被壓暗。 */
+::view-transition-group(g-backdrop)    { z-index: 1 }
+::view-transition-group(g-active-box)  { z-index: 2 }
+::view-transition-group(g-details)     { z-index: 3 }
+::view-transition-group(g-active-av)   { z-index: 4 }
+::view-transition-group(g-active-name) { z-index: 4 }
+
+/* 遮罩自成一組：模糊只在這一層處理，root 全頁快照維持便宜不頓；
+   並柔和淡入，避免遮罩「瞬間出現」。 */
+::view-transition-new(g-backdrop) {
+  animation: vt-backdrop .42s ease-out both;
+}
+
+::view-transition-old(g-backdrop) {
+  animation: vt-backdrop .26s ease-in reverse both;
+}
+
+@keyframes vt-backdrop {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+/* 細節區（intro + Field）在框 morph 後才淡入 / 收合時先淡出 */
+::view-transition-new(g-details) {
+  animation: vt-detail-in .26s .2s both ease-out;
+}
+
+::view-transition-old(g-details) {
+  animation: vt-detail-out .16s both ease-in;
+}
+
+@keyframes vt-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+@keyframes vt-detail-out {
+  to {
+    opacity: 0
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important
+  }
 }
 
 @keyframes rise {

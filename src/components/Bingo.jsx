@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { usePop } from '../hooks/useSfx'
 
 const TASKS = [
   { id: 0, text: '找到和自己一樣 MBTI 的朋友，請他簽名', type: 'text', placeholder: '朋友的名字' },
@@ -38,6 +39,7 @@ function hashId(id) {
 const CONFETTI_COLORS = ['#e88b3a', '#f0a45a', '#c75b3f', '#804220', '#4a3322', '#f5ecdd']
 
 export default function Bingo({ me }) {
+  const pop = usePop()
   const storageKey = `bingo_${me.id}`
   const inputRef = useRef(null)
 
@@ -150,7 +152,7 @@ export default function Bingo({ me }) {
               placeholder={TASKS[order[activeCell]].placeholder}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
             />
-            <button className="bingo-submit" onClick={handleSubmit} disabled={!inputVal.trim()}>
+            <button className="bingo-submit" onClick={() => { pop(); handleSubmit() }} disabled={!inputVal.trim()}>
               <span className="cta-edge" />
               <span className="cta-front bingo-submit-front">確認完成</span>
             </button>

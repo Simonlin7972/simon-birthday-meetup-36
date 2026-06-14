@@ -1,3 +1,5 @@
+import { useWoodTap } from '../hooks/useSfx'
+
 // 底部導覽列。icon 為 Phosphor duotone SVG 內容字串（viewBox 0 0 256 256，fill 著色）。
 export const TABS = [
   {
@@ -28,13 +30,14 @@ export const TABS = [
 ]
 
 export default function TabBar({ active, onChange }) {
+  const tap = useWoodTap()
   return (
     <nav className="tabbar">
       {TABS.map((t) => (
         <button
           key={t.id}
           className={`tab${active === t.id ? ' active' : ''}`}
-          onClick={() => onChange(t.id)}
+          onClick={() => { tap(); onChange(t.id) }}
         >
           <svg
             viewBox="0 0 256 256"

@@ -5,20 +5,29 @@ import Field from './Field'
 export default function GuestSheet({ guest, onClose }) {
   return (
     <>
-      <div className={`sheet-bg${guest ? ' show' : ''}`} onClick={onClose} />
-      <div className={`sheet${guest ? ' show' : ''}`}>
+      <div
+        className={`sheet-bg${guest ? ' show' : ''}`}
+        onClick={onClose}
+        style={{ viewTransitionName: 'g-backdrop' }}
+      />
+      <div
+        className={`sheet${guest ? ' show' : ''}`}
+        style={guest ? { viewTransitionName: 'g-active-box' } : undefined}
+      >
         <div className="sheet-handle" />
         {guest && (
           <>
             <div className="sh-hero">
-              <Avatar person={guest} />
-              <div className="sh-name">{guest.name}</div>
+              <Avatar person={guest} vt="g-active-av" />
+              <div className="sh-name" style={{ viewTransitionName: 'g-active-name' }}>{guest.name}</div>
             </div>
-            {guest.intro && <div className="sh-intro">{guest.intro}</div>}
-            <Field label="怎麼認識 Simon" value={guest.howMet} />
-            <Field label="跟 Simon 認識多久" value={guest.howLong} />
-            <Field label={`在 ${guest.name} 心中，Simon 是`} value={guest.simonIs} />
-            <Field label="觀察到 Simon 最大的改變" value={guest.change} />
+            <div className="sh-details" style={{ viewTransitionName: 'g-details' }}>
+              {guest.intro && <div className="sh-intro">{guest.intro}</div>}
+              <Field label="怎麼認識 Simon" value={guest.howMet} />
+              <Field label="跟 Simon 認識多久" value={guest.howLong} />
+              <Field label={`在 ${guest.name} 心中，Simon 是`} value={guest.simonIs} />
+              <Field label="觀察到 Simon 最大的改變" value={guest.change} />
+            </div>
           </>
         )}
       </div>

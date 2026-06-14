@@ -1,4 +1,5 @@
 import { config } from '../data/payload'
+import { usePop } from '../hooks/useSfx'
 import charImg from '../asset/simon_char.png'
 import logoImg from '../asset/logo_m310.png'
 import { useTypewriter } from '../hooks/useTypewriter'
@@ -6,6 +7,7 @@ import { useTypewriter } from '../hooks/useTypewriter'
 // 啟動畫面：角色從畫面下方升起，上方顯示歡迎詞，
 // 下方 CTA「參與聚會」點擊後呼叫 onStart 進入 PIN 頁。
 export default function Splash({ onStart }) {
+  const pop = usePop()
   // 第二行「Simon 的生日小聚」打字機效果，等進場動畫後才開始打字。
   const typed = useTypewriter('Simon 的生日小聚', { speed: 130, delay: 900 })
 
@@ -38,7 +40,7 @@ export default function Splash({ onStart }) {
 
       <img className="splash-logo" src={logoImg} alt="M310" draggable="false" />
 
-      <button className="splash-cta" onClick={onStart}>
+      <button className="splash-cta" onClick={() => { pop(); onStart() }}>
         <span className="cta-edge" />
         <span className="cta-front">
           馬上進入會場

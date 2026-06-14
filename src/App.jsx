@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { flushSync } from 'react-dom'
 import Splash from './components/Splash'
 import Gate from './components/Gate'
 import TabBar from './components/TabBar'
@@ -14,6 +15,7 @@ export default function App() {
   const [me, setMe] = useState(null)        // 目前登入的來賓
   const [tab, setTab] = useState('profile') // 目前分頁
   const [sheet, setSheet] = useState(null)  // sheet 顯示的來賓
+  const [morphId, setMorphId] = useState(null) // 轉場中參與 morph 的卡片 id
   const [bingoKey, setBingoKey] = useState(0)
   const scrollRef = useRef(null)
   const bingoTapsRef = useRef([])
@@ -23,6 +25,23 @@ export default function App() {
     setSheet(null)
     if (scrollRef.current) scrollRef.current.scrollTop = 0
   }, [tab])
+
+  // 共享元素轉場：用 View Transitions API 讓小卡 morph 成 sheet。
+  // 不支援或偏好減少動態時，直接更新狀態（降級回 CSS 滑上動畫）。
+  const reduceMotion = () =>
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  // 開/關共用：標記參與 morph 的卡片 id（開=目標卡、關=來源卡），讓它在
+  // 捕捉新舊狀態時取得固定的 g-active-* 名稱與 sheet 配對 morph。堆疊順序由
+  // global.css 直接在 ::view-transition-group 伪元素上用 z-index 控制。
+  const animateSheet = (next) => {
+    if (!document.startViewTransition || reduceMotion()) { setSheet(next); return }
+    const id = next ? next.id : sheet?.id
+    flushSync(() => setMorphId(id))
+    const vt = document.startViewTransition(() => flushSync(() => setSheet(next)))
+    vt.finished.finally(() => setMorphId(null))
+  }
+  const openGuest = (p) => animateSheet(p)
+  const closeGuest = () => animateSheet(null)
 
   const handleTab = (id) => {
     // 隱藏重置：在賓果頁連點三下 tab → 重置遊戲
@@ -51,13 +70,13 @@ export default function App() {
     <div className="app">
       <div className="scroll" ref={scrollRef}>
         {tab === 'profile' && <Profile me={me} />}
-        {tab === 'guests' && <Guests onOpen={setSheet} />}
+        {tab === 'guests' && <Guests onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}
         {tab === 'message' && <Message me={me} />}
         {tab === 'wall' && <Wall />}
         {tab === 'bingo' && <Bingo key={bingoKey} me={me} />}
       </div>
       <TabBar active={tab} onChange={handleTab} />
-      <GuestSheet guest={sheet} onClose={() => setSheet(null)} />
+      <GuestSheet guest={sheet} onClose={closeGuest} />
     </div>
   )
 }

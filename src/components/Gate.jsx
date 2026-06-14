@@ -1,11 +1,14 @@
 import { useState, useCallback } from 'react'
 import { people } from '../data/payload'
+import { useKey, usePop } from '../hooks/useSfx'
 import logoImg from '../asset/logo_m310.png'
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'clear', '0', 'del']
 
 // 入場畫面：輸入 4 位數 PIN，正確後呼叫 onEnter(person)。
 export default function Gate({ onEnter }) {
+  const key = useKey()
+  const pop = usePop()
   const [pin, setPin] = useState('')
   const [error, setError] = useState(false)
   const [shake, setShake] = useState(false)
@@ -23,6 +26,7 @@ export default function Gate({ onEnter }) {
   }, [onEnter])
 
   const press = useCallback((k) => {
+    key()
     setError(false)
     setPin((prev) => {
       let next = prev
