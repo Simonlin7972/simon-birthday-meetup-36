@@ -1116,7 +1116,7 @@ body::after {
   padding: 14px 22px 30px;
   transform: translateY(calc(100% + 16px + var(--safe-b)));
   transition: .34s cubic-bezier(.2, .8, .2, 1);
-  max-height: 86vh;
+  max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 -10px 40px rgba(74, 51, 34, .2)
 }
@@ -1135,15 +1135,16 @@ body::after {
 
 .sh-hero {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 8px
 }
 
 .sh-hero .av {
-  width: 60px;
-  height: 60px;
-  font-size: 25px;
+  width: 90px;
+  height: 90px;
+  font-size: 37px;
   box-shadow: none
 }
 
@@ -1151,14 +1152,16 @@ body::after {
   font-family: var(--serif);
   font-size: 24px;
   font-weight: 900;
-  color: var(--ink)
+  color: var(--ink);
+  text-align: center
 }
 
 .sh-intro {
   font-size: 14.5px;
   color: var(--muted);
   line-height: 1.7;
-  margin: 14px 0 4px
+  margin: 14px 0 4px;
+  text-align: center
 }
 
 /* ---------- 共享元素轉場（小卡 ↔ sheet, View Transitions API） ---------- */
