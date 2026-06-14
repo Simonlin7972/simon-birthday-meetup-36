@@ -27,7 +27,6 @@ export default function Guests({ onOpen, activeId, morphId }) {
                 <div className="gn" style={{ viewTransitionName: morphing ? 'g-active-name' : 'none' }}>{p.name}</div>
               </div>
               <div className="gi">{p.intro || ''}</div>
-              {p.howLong && <div className="chip">認識 {p.howLong}</div>}
             </Card>
           )
         })}
