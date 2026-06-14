@@ -13,6 +13,10 @@
   --gold: #e88b3a;
   --gold-bright: #f0a45a;
   --rose: #c75b3f;
+  /* 立體按鈕 / PIN 點：飽和栗棕 */
+  --btn: #804220;
+  --btn-edge: #4f2810;
+  --btn-ink: #fff7ec;
   /* 面 / 線 */
   --surface: #f5ecdd;
   --surface2: #eadcc7;
@@ -88,7 +92,7 @@ body::after {
   padding: calc(env(safe-area-inset-top) + 40px) calc(24px + env(safe-area-inset-right)) calc(28px + var(--safe-b)) calc(24px + env(safe-area-inset-left));
   text-align: center;
   overflow: hidden;
-  background: #eacdbb
+  background: var(--bg)
 }
 
 .splash-top {
@@ -205,18 +209,18 @@ body::after {
    用 absolute 脫離排版流，才不會壓縮到 flex:1 的人物。 */
 .splash-logo {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: auto;
+  right: 40px;
   margin: 0 auto;
-  bottom: calc(env(safe-area-inset-bottom) + 108px);
+  bottom: calc(env(safe-area-inset-bottom) + 120px);
   z-index: 3;
-  width: 72px;
-  height: 72px;
+  width: 108px;
+  height: 108px;
   object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
   opacity: 0;
-  animation: rise .9s .7s forwards, spin 9s linear infinite;
+  animation: rise .9s .7s forwards, spin 12s linear infinite;
 }
 
 @keyframes spin {
@@ -257,7 +261,7 @@ body::after {
   width: 100%;
   height: 100%;
   border-radius: 18px;
-  background: #4f2810;
+  background: var(--btn-edge);
   will-change: transform
 }
 
@@ -269,8 +273,8 @@ body::after {
   position: relative;
   height: 58px;
   border-radius: 18px;
-  background: #804220;
-  color: #fff7ec;
+  background: var(--btn);
+  color: var(--btn-ink);
   font-family: var(--sans);
   font-size: 18px;
   font-weight: 700;
@@ -322,7 +326,7 @@ body::after {
   align-items: center;
   padding: 24px calc(24px + env(safe-area-inset-right)) calc(24px + var(--safe-b)) calc(24px + env(safe-area-inset-left));
   text-align: center;
-  background: #eacdbb
+  background: var(--bg)
 }
 
 .gate-mark {
@@ -400,6 +404,16 @@ body::after {
   animation: rise .9s .7s forwards
 }
 
+.pin-logo {
+  display: block;
+  width: 104px;
+  height: 104px;
+  object-fit: contain;
+  margin: 0 auto 18px;
+  user-select: none;
+  -webkit-user-drag: none
+}
+
 .pin-hint {
   font-size: 18px;
   color: var(--muted);
@@ -423,8 +437,8 @@ body::after {
 }
 
 .pin-dot.on {
-  background: #804220;
-  border-color: #804220;
+  background: var(--btn);
+  border-color: var(--btn);
   box-shadow: 0 0 14px rgba(128, 66, 32, .4);
   transform: scale(1.05)
 }
@@ -475,7 +489,7 @@ body::after {
   width: 100%;
   height: 100%;
   border-radius: 16px;
-  background: var(--bg)
+  background: var(--bg2)
 }
 
 .key-face {

@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { people } from '../data/payload'
+import logoImg from '../asset/logo_m310.png'
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'clear', '0', 'del']
 
@@ -36,6 +37,7 @@ export default function Gate({ onEnter }) {
   return (
     <section className="gate">
       <div className={`pin-wrap${shake ? ' shake' : ''}`}>
+        <img className="pin-logo" src={logoImg} alt="M310" draggable="false" />
         <div className="pin-hint">輸入你的專屬 PIN 入場</div>
         <div className="pin-dots">
           {[0, 1, 2, 3].map((i) => (
