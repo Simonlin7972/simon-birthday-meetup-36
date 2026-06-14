@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import Splash from './components/Splash'
 import Gate from './components/Gate'
 import TabBar from './components/TabBar'
 import Profile from './components/Profile'
@@ -8,6 +9,7 @@ import Wall from './components/Wall'
 import GuestSheet from './components/GuestSheet'
 
 export default function App() {
+  const [started, setStarted] = useState(false) // 是否已通過啟動畫面
   const [me, setMe] = useState(null)        // 目前登入的來賓
   const [tab, setTab] = useState('profile') // 目前分頁
   const [sheet, setSheet] = useState(null)  // sheet 顯示的來賓
@@ -19,6 +21,7 @@ export default function App() {
     if (scrollRef.current) scrollRef.current.scrollTop = 0
   }, [tab])
 
+  if (!started) return <Splash onStart={() => setStarted(true)} />
   if (!me) return <Gate onEnter={setMe} />
 
   return (

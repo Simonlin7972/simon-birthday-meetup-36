@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { config, people } from '../data/payload'
+import { people } from '../data/payload'
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'clear', '0', 'del']
 
@@ -35,14 +35,6 @@ export default function Gate({ onEnter }) {
 
   return (
     <section className="gate">
-      <div className="gate-mark">{config.subtitle}</div>
-      <h1 className="gate-title">
-        <span className="l1">{config.title}</span>
-        <span className="l2">{config.title2}</span>
-      </h1>
-      <div className="gate-sub">Welcome</div>
-      <div className="gate-meta">{config.meta}</div>
-
       <div className={`pin-wrap${shake ? ' shake' : ''}`}>
         <div className="pin-hint">輸入你的專屬 PIN 入場</div>
         <div className="pin-dots">

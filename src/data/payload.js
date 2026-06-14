@@ -17,7 +17,7 @@ export const config = {
   title: 'Simon 的 36 歲',
   title2: '生日 & 告別派對',
   subtitle: 'Birthday & Farewell',
-  meta: 'Taipei · 2026 · 19:30–22:30',
+  meta: 'M310 · 2026/6/26 (五) · 19:30–22:30',
   host: 'Simon Lin',
 }
 
