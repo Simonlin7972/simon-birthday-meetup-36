@@ -4,9 +4,8 @@ import { people } from '../data/payload'
 // 「來賓」：橫向滑動的卡片牆，點一下開啟詳細 sheet。
 export default function Guests({ onOpen }) {
   return (
-    <div className="screen">
-      <div className="kicker">The Guests</div>
-      <div className="h-title">今晚的人</div>
+    <div className="screen screen-guests">
+      <div className="h-title h-title-bold">今晚的朋友們</div>
       <div className="h-sub">共 {people.length} 位朋友到場 · 左右滑動，點一下看更多</div>
       <div className="rail">
         {people.map((p) => (

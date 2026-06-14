@@ -6,7 +6,6 @@ export default function Wall({ me }) {
   const wishes = people.filter((p) => p.toSimon)
   return (
     <div className="screen">
-      <div className="kicker">Wishes for Simon</div>
       <div className="h-title">大家想對 Simon 說的話</div>
       <div className="h-sub">每個人都留了一句 · 一起送給今晚的壽星</div>
       <div className="wall">

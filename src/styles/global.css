@@ -569,6 +569,10 @@ body::after {
   color: var(--ink)
 }
 
+.h-title-bold {
+  font-weight: 900
+}
+
 .h-sub {
   font-size: 13.5px;
   color: var(--muted);
@@ -610,13 +614,13 @@ body::after {
   height: 104px;
   font-size: 42px;
   margin-bottom: 18px;
-  box-shadow: 0 0 0 2px var(--ink-line), 0 12px 30px rgba(74, 51, 34, .18)
+  box-shadow: 0 12px 30px rgba(74, 51, 34, .18)
 }
 
 .pf-name {
   font-family: var(--serif);
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: .01em;
   color: var(--ink)
 }
@@ -664,6 +668,55 @@ body::after {
   color: var(--surface)
 }
 
+/* 今晚的人：整頁垂直置中、標題與說明水平置中 */
+.screen-guests {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center
+}
+
+/* 卡片較多，改成兩排橫向滾動，少滑一半。
+   grid-auto-flow: column → 依序由上而下填滿一欄再換下一欄 */
+.screen-guests .rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: auto auto;
+  grid-auto-columns: min(79vw, 330px);
+  align-items: stretch;
+  padding-left: calc((100vw - min(79vw, 330px)) / 2);
+  padding-right: calc((100vw - min(79vw, 330px)) / 2)
+}
+
+/* 卡片內文維持靠左；兩排版面下縮短高度讓兩張可同時入鏡 */
+.screen-guests .gcard {
+  text-align: left;
+  min-height: 0;
+  padding: 18px 18px
+}
+
+.screen-guests .gcard .av {
+  width: 52px;
+  height: 52px;
+  font-size: 22px;
+  margin-bottom: 12px
+}
+
+.screen-guests .gcard .gn {
+  font-size: 19px;
+  margin-bottom: 6px
+}
+
+.screen-guests .gcard .gi {
+  -webkit-line-clamp: 2;
+  font-size: 13px
+}
+
+.screen-guests .gcard .chip {
+  margin-top: 12px
+}
+
 /* guests carousel */
 .rail {
   display: flex;
@@ -706,13 +759,14 @@ body::after {
   width: 62px;
   height: 62px;
   font-size: 26px;
-  margin-bottom: 16px
+  margin-bottom: 16px;
+  box-shadow: none
 }
 
 .gcard .gn {
   font-family: var(--serif);
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 700;
   margin-bottom: 10px;
   color: var(--ink)
 }
@@ -838,12 +892,13 @@ body::after {
 .wc-head .av {
   width: 36px;
   height: 36px;
-  font-size: 15px
+  font-size: 15px;
+  box-shadow: none
 }
 
 .wc-name {
   font-size: 14.5px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ink)
 }
 
@@ -861,39 +916,51 @@ body::after {
   opacity: .92
 }
 
-/* tab bar */
+/* tab bar — 四個獨立的漂浮立體按鈕 */
 .tabbar {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: calc(14px + var(--safe-b));
   z-index: 20;
   display: flex;
-  justify-content: space-around;
-  align-items: stretch;
-  padding: 8px 8px calc(8px + var(--safe-b));
-  background: rgba(246, 238, 225, .85);
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
-  border-top: 1px solid var(--line)
+  justify-content: center;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 0 16px;
+  background: none;
+  border: 0;
+  pointer-events: none
 }
 
 .tab {
+  pointer-events: auto;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 8px 4px;
-  border: 0;
-  background: none;
+  gap: 3px;
+  padding: 11px 4px 9px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fbf3e6, #f1e4cf);
   color: var(--faint);
   cursor: pointer;
   font-family: var(--sans);
-  font-size: 10.5px;
-  letter-spacing: .04em;
-  transition: .18s;
-  min-height: 52px
+  font-size: 10px;
+  letter-spacing: .03em;
+  transition: transform .2s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s, background .2s, color .2s;
+  box-shadow:
+    0 6px 14px rgba(74, 51, 34, .18),
+    0 2px 4px rgba(74, 51, 34, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .65)
+}
+
+.tab:active {
+  transform: translateY(2px) scale(.97);
+  box-shadow:
+    0 3px 7px rgba(74, 51, 34, .2),
+    inset 0 1px 0 rgba(255, 255, 255, .5)
 }
 
 .tab svg {
@@ -903,11 +970,18 @@ body::after {
 }
 
 .tab.active {
-  color: var(--gold)
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  transform: translateY(-6px);
+  box-shadow:
+    0 12px 22px rgba(232, 139, 58, .42),
+    0 4px 8px rgba(74, 51, 34, .18),
+    inset 0 1px 0 rgba(255, 255, 255, .4)
 }
 
 .tab.active svg {
-  filter: drop-shadow(0 0 8px rgba(232, 139, 58, .35))
+  filter: drop-shadow(0 1px 2px rgba(120, 60, 10, .35))
 }
 
 /* modal sheet */
