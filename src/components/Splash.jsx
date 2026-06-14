@@ -12,7 +12,7 @@ export default function Splash({ onStart }) {
   return (
     <section className="splash">
       <div className="splash-top">
-        <svg className="splash-hi" viewBox="0 30 380 118" aria-label="Welcome">
+        <svg className="splash-hi" viewBox="0 30 380 92" aria-label="Welcome">
           <defs>
             <path id="welcomeArc" d="M 20 140 A 240 200 0 0 1 360 140" fill="none" />
           </defs>

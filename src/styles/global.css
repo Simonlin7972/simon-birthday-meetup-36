@@ -615,6 +615,15 @@ body::after {
 }
 
 /* profile */
+/* 我的卡：整頁內容包進一張卡片容器 */
+.pf-card {
+  background: var(--surface);
+  border-radius: 22px;
+  padding: 28px 22px;
+  margin-top: 4px;
+  box-shadow: 5px 5px 0 rgba(30, 26, 23, .2)
+}
+
 .pf-hero {
   display: flex;
   flex-direction: column;
@@ -677,9 +686,9 @@ body::after {
   color: var(--ink)
 }
 
-/* 我的卡（Profile）背景較深，橘色小標對比不足，改用淺色文字 */
+/* 我的卡：小標在淺色卡片上，改用較深的暖色以維持對比 */
 .screen .field-label {
-  color: var(--surface)
+  color: var(--rose)
 }
 
 /* 今晚的人：整頁垂直置中、標題與說明水平置中 */
@@ -905,6 +914,7 @@ body::after {
 
 .msg-gate-title {
   font-family: var(--serif);
+  font-weight: 900;
   font-size: clamp(1.2rem, 5.5vw, 1.5rem);
   color: var(--ink);
   margin-bottom: 8px
@@ -924,25 +934,24 @@ body::after {
 }
 
 .code-box {
-  width: 52px;
-  height: 64px;
-  border: 2px solid var(--ink-line);
-  border-radius: 14px;
+  width: 68px;
+  height: 68px;
+  border: none;
+  border-radius: 16px;
   background: var(--surface);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 28px;
+  font-size: 34px;
   text-align: center;
-  box-shadow: 3px 3px 0 rgba(30, 26, 23, .18);
-  transition: border-color .15s, box-shadow .15s, background .15s;
+  box-shadow: 4px 4px 0 rgba(30, 26, 23, .18);
+  transition: box-shadow .15s, background .15s;
   -webkit-appearance: none;
   appearance: none
 }
 
 .code-box:focus {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 3px 3px 0 rgba(232, 139, 58, .45)
+  box-shadow: 4px 4px 0 rgba(232, 139, 58, .45)
 }
 
 .code-box.filled {
