@@ -33,10 +33,15 @@ export default function Gate({ onEnter }) {
       if (k === 'del') next = prev.slice(0, -1)
       else if (k === 'clear') next = ''
       else if (prev.length < 4) next = prev + k
-      if (next.length === 4) setTimeout(() => submit(next), 140)
       return next
     })
-  }, [submit])
+  }, [])
+
+  const confirm = useCallback(() => {
+    if (pin.length !== 4) return
+    pop()
+    submit(pin)
+  }, [pin, pop, submit])
 
   return (
     <section className="gate">
@@ -62,6 +67,14 @@ export default function Gate({ onEnter }) {
             </button>
           ))}
         </div>
+        <button
+          className="gate-submit"
+          onClick={confirm}
+          disabled={pin.length !== 4}
+        >
+          <span className="cta-edge" />
+          <span className="cta-front">報到完成</span>
+        </button>
       </div>
     </section>
   )

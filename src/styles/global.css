@@ -453,7 +453,8 @@ body::after {
   font-size: 18px;
   color: var(--muted);
   margin-bottom: 22px;
-  letter-spacing: .04em
+  letter-spacing: .04em;
+  font-weight: 900
 }
 
 .pin-dots {
@@ -501,6 +502,46 @@ body::after {
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-top: 14px
+}
+
+/* 報到完成：四碼齊全才亮起可按，沿用 splash CTA 的立體按鈕 */
+.gate-submit {
+  margin-top: 20px;
+  width: 100%;
+  position: relative;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  outline-offset: 4px;
+  transition: opacity .2s
+}
+
+.gate-submit .cta-front {
+  font-weight: 900;
+  letter-spacing: .2em
+}
+
+.gate-submit:hover:not(:disabled) .cta-front {
+  transform: translateY(-9px)
+}
+
+.gate-submit:active:not(:disabled) .cta-front {
+  transform: translateY(-2px);
+  transition: transform .04s
+}
+
+.gate-submit:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+  filter: grayscale(.5)
+}
+
+.gate-submit:disabled .cta-front {
+  transform: translateY(-7px)
 }
 
 /* Duolingo 風立體按鍵：::before 當固定側壁，.key-face 浮在上面，按下時壓進去 */
@@ -558,6 +599,7 @@ body::after {
 .key.fn .key-face {
   font-size: 14px;
   font-family: var(--sans);
+  font-weight: 900;
   color: var(--muted);
   background: transparent;
   border-color: transparent;
