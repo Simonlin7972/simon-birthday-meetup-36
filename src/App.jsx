@@ -30,7 +30,7 @@ export default function App() {
         {tab === 'profile' && <Profile me={me} />}
         {tab === 'guests' && <Guests onOpen={setSheet} />}
         {tab === 'message' && <Message me={me} />}
-        {tab === 'wall' && <Wall me={me} />}
+        {tab === 'wall' && <Wall />}
       </div>
       <TabBar active={tab} onChange={setTab} />
       <GuestSheet guest={sheet} onClose={() => setSheet(null)} />

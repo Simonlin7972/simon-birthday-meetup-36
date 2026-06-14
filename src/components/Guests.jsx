@@ -10,8 +10,10 @@ export default function Guests({ onOpen }) {
       <div className="rail">
         {people.map((p) => (
           <div key={p.id} className="gcard" onClick={() => onOpen(p)}>
-            <Avatar person={p} />
-            <div className="gn">{p.name}</div>
+            <div className="gcard-head">
+              <Avatar person={p} />
+              <div className="gn">{p.name}</div>
+            </div>
             <div className="gi">{p.intro || ''}</div>
             {p.howLong && <div className="chip">認識 {p.howLong}</div>}
           </div>
