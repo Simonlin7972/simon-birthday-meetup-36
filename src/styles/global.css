@@ -140,7 +140,7 @@ body::after {
   display: block;
   width: min(100vw, 510px);
   height: auto;
-  margin: 18px auto 10px;
+  margin: 18px auto 0px;
   overflow: visible;
   opacity: 0;
   animation: rise .8s .2s forwards
@@ -209,6 +209,17 @@ body::after {
   letter-spacing: .08em;
   opacity: 0;
   animation: rise .9s .48s forwards
+}
+
+.splash-countdown {
+  font-size: 15px;
+  color: var(--faint);
+  margin-top: 8px;
+  margin-bottom: 16px;
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  animation: rise .9s .6s forwards;
 }
 
 .splash-char {
@@ -505,9 +516,20 @@ body::after {
 }
 
 @keyframes dot-fill {
-  0% { transform: scale(0); background: transparent; border-color: var(--line2) }
-  50% { background: var(--btn); border-color: var(--btn) }
-  100% { transform: scale(1.05) }
+  0% {
+    transform: scale(0);
+    background: transparent;
+    border-color: var(--line2)
+  }
+
+  50% {
+    background: var(--btn);
+    border-color: var(--btn)
+  }
+
+  100% {
+    transform: scale(1.05)
+  }
 }
 
 .gate-circle {
@@ -527,7 +549,11 @@ body::after {
 }
 
 @keyframes circle-expand {
-  0% { width: 0; height: 0 }
+  0% {
+    width: 0;
+    height: 0
+  }
+
   100% {
     width: calc(var(--radius) * 2);
     height: calc(var(--radius) * 2)
@@ -693,13 +719,27 @@ body::after {
 }
 
 @keyframes slide-up {
-  from { transform: translateY(100%); opacity: 0 }
-  to { transform: translateY(0); opacity: 1 }
+  from {
+    transform: translateY(100%);
+    opacity: 0
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1
+  }
 }
 
 @keyframes slide-up-card {
-  from { transform: translateY(60px); opacity: 0 }
-  to { transform: translateY(0); opacity: 1 }
+  from {
+    transform: translateY(60px);
+    opacity: 0
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1
+  }
 }
 
 .kicker {

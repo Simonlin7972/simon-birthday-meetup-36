@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { config } from '../data/payload'
 import { usePop } from '../hooks/useSfx'
 import charImg from '../asset/simon_char.png'
@@ -11,6 +11,20 @@ export default function Splash({ onStart }) {
   const pop = usePop()
   // 第二行「Simon 的生日小聚」打字機效果，等進場動畫後才開始打字。
   const typed = useTypewriter('Simon 的生日小聚', { speed: 130, delay: 900 })
+
+  // 倒數到 2026/6/26 19:30 台灣時間 (UTC+8)
+  const target = new Date('2026-06-26T19:30:00+08:00').getTime()
+  const [remaining, setRemaining] = useState(() => target - Date.now())
+
+  useEffect(() => {
+    if (remaining <= 0) return
+    const id = setInterval(() => {
+      const diff = target - Date.now()
+      if (diff <= 0) { setRemaining(0); clearInterval(id) }
+      else setRemaining(diff)
+    }, 1000)
+    return () => clearInterval(id)
+  }, [remaining <= 0])
   // 轉場：橘色圓形從點擊處放大覆蓋全畫面，動畫結束後進入 Gate。
   const [reveal, setReveal] = useState(null) // null | {x, y}
 
@@ -43,6 +57,11 @@ export default function Splash({ onStart }) {
           </span>
         </h1>
         <div className="splash-meta">{config.meta}</div>
+        {remaining > 0 && (
+          <div className="splash-countdown">
+            活動倒數 {Math.floor(remaining / 86400000)} 天 {Math.floor((remaining % 86400000) / 3600000)} 小時 {String(Math.floor((remaining % 3600000) / 60000)).padStart(2, '0')} 分 {String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0')} 秒
+          </div>
+        )}
       </div>
 
       <div className="splash-char">
