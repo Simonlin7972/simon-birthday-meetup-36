@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import illustrationMessage from '../asset/illustration_message.png'
 
 // 「給你的話」：先輸入通關密碼（來賓 PIN 反轉），通過後顯示 Simon 寫給這位來賓的話。
@@ -8,7 +8,30 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
   const [unlocked, setUnlocked] = useState(false)
   const [error, setError] = useState(false)
   const [shake, setShake] = useState(false)
+  const [typed, setTyped] = useState('')
+  const [showSign, setShowSign] = useState(false)
+  const [cursorDone, setCursorDone] = useState(false)
   const refs = [useRef(null), useRef(null), useRef(null), useRef(null)]
+
+  const bodyText = me.fromSimon || ''
+
+  useEffect(() => {
+    if (!unlocked || !bodyText) return
+    setTyped('')
+    setShowSign(false)
+    setCursorDone(false)
+    let i = 0
+    const id = setInterval(() => {
+      i++
+      setTyped(bodyText.slice(0, i))
+      if (i >= bodyText.length) {
+        clearInterval(id)
+        setTimeout(() => setShowSign(true), 400)
+        setTimeout(() => setCursorDone(true), 1200)
+      }
+    }, 70)
+    return () => clearInterval(id)
+  }, [unlocked, bodyText])
 
   const submit = (value) => {
     if (value === CODE) {
@@ -86,25 +109,30 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
   }
 
   return (
-    <div className="screen">
-      <button className="bingo-exit" onClick={exitMessage}>回到主頁</button>
-      <div className="msg-wrap">
-        <div className="msg-from">Simon 給 {me.name} 的話</div>
-        {me.fromSimon ? (
-          <>
-            <div className="msg-mark">“</div>
-            <div className="msg-body">{me.fromSimon}</div>
-            <div className="msg-sign">
-              — <b>Simon</b>
+    <div className="screen screen-letter">
+      <button className="bingo-exit" onClick={exitMessage}>{"回到主頁"}</button>
+      <div className="letter">
+        <div className="letter-lines" />
+        <div className="letter-content">
+          <div className="letter-to">Dear {me.name},</div>
+          {bodyText ? (
+            <>
+              <div className="letter-body">
+                {typed}
+                <span className={`letter-cursor${cursorDone ? ' done' : ''}`} />
+              </div>
+              <div className={`letter-sign${showSign ? ' show' : ''}`}>
+                {"— Simon"}
+              </div>
+            </>
+          ) : (
+            <div className="msg-empty">
+              {"Simon 正在為你寫一封信..."}
+              <br />
+              {"當天見面時親口告訴你。"}
             </div>
-          </>
-        ) : (
-          <div className="msg-empty">
-            Simon 正在為你寫一句話 ✍️
-            <br />
-            當天見面時親口告訴你。
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

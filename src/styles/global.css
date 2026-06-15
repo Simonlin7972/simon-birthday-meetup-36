@@ -1088,62 +1088,118 @@ body::after {
 }
 
 /* message */
-.msg-wrap {
-  min-height: 62vh;
+/* 信紙 */
+.screen-letter {
+  min-height: calc(100dvh - env(safe-area-inset-top) - 26px - env(safe-area-inset-bottom) - 24px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 10px 4px
+  justify-content: center
 }
 
-.msg-from {
-  font-size: 11px;
-  letter-spacing: .34em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 30px;
-  font-weight: 600
+.letter {
+  position: relative;
+  margin: 0 auto;
+  width: calc(100% - 8px);
+  max-width: 420px;
+  min-height: 480px;
+  background: #faf6ef;
+  border-radius: 6px;
+  box-shadow: 0 2px 12px rgba(74, 51, 34, .10), 0 0 0 1px rgba(74, 51, 34, .06);
+  overflow: hidden
 }
 
-.msg-mark {
-  font-family: var(--serif);
-  font-size: 64px;
-  line-height: .5;
-  color: var(--gold);
-  opacity: .55;
-  height: 30px
+/* 橫線背景 */
+.letter-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 35px,
+    rgba(74, 51, 34, .07) 35px,
+    rgba(74, 51, 34, .07) 36px
+  );
+  pointer-events: none
 }
 
-.msg-body {
-  font-family: var(--serif);
-  font-size: clamp(1.45rem, 6vw, 2rem);
-  line-height: 1.6;
-  font-weight: 400;
-  max-width: 18em;
-  margin: 6px 0;
-  color: var(--ink)
+/* 左側紅線 */
+.letter-lines::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 36px;
+  width: 1.5px;
+  background: rgba(200, 90, 60, .18)
 }
 
-.msg-sign {
-  font-size: 14px;
+.letter-content {
+  position: relative;
+  padding: 30px 24px 36px 50px;
+  z-index: 1
+}
+
+.letter-to {
+  font-family: 'LXGW WenKai TC', cursive;
+  font-size: 15px;
   color: var(--muted);
-  margin-top: 32px;
-  letter-spacing: .06em
+  margin-bottom: 20px;
+  line-height: 36px
 }
 
-.msg-sign b {
+.letter-body {
+  font-family: 'LXGW WenKai TC', cursive;
+  font-size: clamp(1.15rem, 4.8vw, 1.35rem);
+  line-height: 36px;
+  color: #3a2a1a;
+  word-break: break-word
+}
+
+.letter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--gold);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursor-blink .6s steps(1) infinite
+}
+
+.letter-cursor.done {
+  animation: cursor-fade .5s forwards
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1 }
+  50% { opacity: 0 }
+}
+
+@keyframes cursor-fade {
+  to { opacity: 0 }
+}
+
+.letter-sign {
+  font-family: 'LXGW WenKai TC', cursive;
+  font-size: 16px;
   color: var(--gold);
-  font-weight: 500;
-  font-family: var(--serif)
+  margin-top: 28px;
+  line-height: 36px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .5s, transform .5s
+}
+
+.letter-sign.show {
+  opacity: 1;
+  transform: translateY(0)
 }
 
 .msg-empty {
-  font-size: 14.5px;
+  font-family: 'LXGW WenKai TC', cursive;
+  font-size: 15px;
   color: var(--faint);
-  line-height: 1.8;
-  max-width: 20em
+  line-height: 36px;
+  margin-top: 8px
 }
 
 /* 給你的話：通關密碼 */
