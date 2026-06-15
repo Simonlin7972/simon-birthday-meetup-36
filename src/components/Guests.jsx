@@ -21,7 +21,7 @@ export default function Guests({ me, onOpen, activeId, morphId }) {
     <div className="screen screen-guests">
       <div className="h-title h-title-bold">今晚的朋友們</div>
       <div className="h-sub">歡迎大家今晚互相聊聊認識！</div>
-      <div className="rail" style={activeId != null ? { scrollSnapType: 'none' } : undefined}>
+      <div className="rail" style={activeId != null || morphId != null ? { scrollSnapType: 'none' } : undefined}>
         {ordered.map((p) => {
           // 只有「正在 morph」的那張卡掛固定的 g-active-* 名（同時只有一張，
           // 不會撞名），與 sheet 配對 morph；其餘卡片無名 → 落在 root 群組底層、

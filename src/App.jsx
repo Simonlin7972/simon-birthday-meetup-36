@@ -22,6 +22,13 @@ export default function App() {
   const scrollRef = useRef(null)
   const bingoTapsRef = useRef([])
 
+  // 入場動畫完成後移除 .enter（tab 依序浮現 + 卡片摺紙展開 ≈ 2s）
+  useEffect(() => {
+    if (!entering) return
+    const id = setTimeout(() => setEntering(false), 2100)
+    return () => clearTimeout(id)
+  }, [entering])
+
   // 切換分頁時收合 sheet、回到頂端，並離開賓果遊戲畫面
   useEffect(() => {
     setSheet(null)
@@ -70,7 +77,7 @@ export default function App() {
   if (!me) return <Gate onEnter={(p) => { setMe(p); setEntering(true) }} />
 
   return (
-    <div className={`app${entering ? ' enter' : ''}`} onAnimationEnd={() => setEntering(false)}>
+    <div className={`app${entering ? ' enter' : ''}`}>
       <div className={`scroll${bingoPlaying ? ' scroll-fullscreen' : ''}`} ref={scrollRef}>
         {tab === 'profile' && <Profile me={me} />}
         {tab === 'guests' && <Guests me={me} onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}

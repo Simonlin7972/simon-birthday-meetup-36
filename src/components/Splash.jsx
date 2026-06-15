@@ -59,7 +59,7 @@ export default function Splash({ onStart }) {
         <div className="splash-meta">{config.meta}</div>
         {remaining > 0 && (
           <div className="splash-countdown">
-            活動倒數 {Math.floor(remaining / 86400000)} 天 {Math.floor((remaining % 86400000) / 3600000)} 小時 {String(Math.floor((remaining % 3600000) / 60000)).padStart(2, '0')} 分 {String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0')} 秒
+            活動倒數 <span className="cd-num">{Math.floor(remaining / 86400000)}</span> 天 <span className="cd-num">{Math.floor((remaining % 86400000) / 3600000)}</span> 小時 <span className="cd-num">{String(Math.floor((remaining % 3600000) / 60000)).padStart(2, '0')}</span> 分 <span className="cd-num">{String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0')}</span> 秒
           </div>
         )}
       </div>
@@ -73,7 +73,7 @@ export default function Splash({ onStart }) {
       <button className="splash-cta" onClick={handleStart} disabled={!!reveal}>
         <span className="cta-edge" />
         <span className="cta-front">
-          馬上進入會場
+          進入會場
           <svg className="cta-arrow" viewBox="0 0 256 256" aria-hidden="true">
             <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z" />
           </svg>

@@ -222,6 +222,11 @@ body::after {
   animation: rise .9s .6s forwards;
 }
 
+.cd-num {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+}
+
 .splash-char {
   flex: 1;
   min-height: 0;
@@ -709,37 +714,90 @@ body::after {
   animation: fade .45s
 }
 
-/* 入場動畫：tabbar 先滑上，profile card 接著滑上 */
-.app.enter .tabbar {
-  animation: slide-up .8s cubic-bezier(.22, 1, .36, 1) both
+/* 入場動畫：tab 按鈕依序浮現，結束後卡片以 3D 摺紙展開 */
+.app.enter .tab {
+  opacity: 0;
+  transform: translateY(100%) scale(.7);
+  animation: tab-pop .5s cubic-bezier(.22, 1, .36, 1) forwards;
 }
 
+.app.enter .tab:nth-child(1) { animation-delay: .15s }
+.app.enter .tab:nth-child(2) { animation-delay: .28s }
+.app.enter .tab:nth-child(3) { animation-delay: .41s }
+.app.enter .tab:nth-child(4) { animation-delay: .54s }
+.app.enter .tab:nth-child(5) { animation-delay: .67s }
+
+@keyframes tab-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) scale(.7)
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.05)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1)
+  }
+}
+
+/* 卡片 3D 摺紙展開：正中間摺痕，上半部往上翻開 */
 .app.enter .screen {
-  animation: slide-up-card .85s cubic-bezier(.22, 1, .36, 1) .35s both
+  perspective: 900px;
+  perspective-origin: center 40%;
 }
 
-@keyframes slide-up {
-  from {
-    transform: translateY(100%);
-    opacity: 0
-  }
+.app.enter .screen > * {
+  position: relative;
+  transform-origin: center center;
+  transform: rotateX(90deg);
+  opacity: 0;
+  animation: paper-unfold .9s cubic-bezier(.3, .8, .2, 1) 1.15s forwards;
+}
 
-  to {
-    transform: translateY(0);
-    opacity: 1
+/* 摺痕線：展開時卡片正中間浮現一條淡色壓線，動畫結束後漸漸消失 */
+.app.enter .screen > *::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(74, 51, 34, .18) 20%, rgba(74, 51, 34, .22) 50%, rgba(74, 51, 34, .18) 80%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  animation: crease-flash .9s cubic-bezier(.3, .8, .2, 1) 1.15s forwards;
+  z-index: 1;
+}
+
+@keyframes paper-unfold {
+  0% {
+    opacity: 0;
+    transform: rotateX(90deg);
+  }
+  15% {
+    opacity: 1;
+  }
+  65% {
+    transform: rotateX(-6deg);
+  }
+  82% {
+    transform: rotateX(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg);
+    box-shadow: var(--card-shadow);
   }
 }
 
-@keyframes slide-up-card {
-  from {
-    transform: translateY(60px);
-    opacity: 0
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1
-  }
+/* 摺痕在展開中段最明顯，攤平後淡出 */
+@keyframes crease-flash {
+  0%   { opacity: 0 }
+  30%  { opacity: 1 }
+  55%  { opacity: .7 }
+  100% { opacity: 0 }
 }
 
 .kicker {
