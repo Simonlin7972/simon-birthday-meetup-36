@@ -73,7 +73,7 @@ export default function App() {
     <div className={`app${entering ? ' enter' : ''}`} onAnimationEnd={() => setEntering(false)}>
       <div className={`scroll${bingoPlaying ? ' scroll-fullscreen' : ''}`} ref={scrollRef}>
         {tab === 'profile' && <Profile me={me} />}
-        {tab === 'guests' && <Guests onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}
+        {tab === 'guests' && <Guests me={me} onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}
         {tab === 'message' && <Message me={me} />}
         {tab === 'wall' && <Wall />}
         {tab === 'bingo' && <Bingo key={bingoKey} me={me} onPlayingChange={setBingoPlaying} />}
