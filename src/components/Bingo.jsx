@@ -3,15 +3,15 @@ import { usePop } from '../hooks/useSfx'
 import illustrationBingo from '../asset/illustration_bingo.png'
 
 const TASKS = [
-  { id: 0, text: '找到和自己一樣 MBTI 的朋友，請他簽名', type: 'text', placeholder: '朋友的名字' },
+  { id: 0, text: '和自己一樣 MBTI 的朋友', type: 'text', placeholder: '名字 + MBTI' },
   { id: 1, text: '上衣顏色穿一樣的朋友，一起拍張照片', type: 'check' },
-  { id: 2, text: '找一位現場你不認識的朋友，請他簽名', type: 'text', placeholder: '朋友的名字' },
-  { id: 3, text: '找跟 Simon 認識超過五年的，請他簽名', type: 'text', placeholder: '朋友的名字' },
-  { id: 4, text: '目前正職工作「不是」設計師的，請他簽名', type: 'text', placeholder: '朋友的名字' },
-  { id: 5, text: '請寫出 Simon 的中文名字（可以現場用問的）', type: 'text', placeholder: 'Simon 的中文名字' },
-  { id: 6, text: '跟你不認識的新朋友交換一個興趣', type: 'text', placeholder: '交換到的興趣' },
-  { id: 7, text: '在「台灣以外」的地方跟 Simon 見過面的人，請他寫下地點＋名字', type: 'text', placeholder: '地點 + 名字' },
-  { id: 8, text: '過去曾經和 Simon 一起工作過，請他簽名', type: 'text', placeholder: '朋友的名字' },
+  { id: 2, text: '一位現場不認識的朋友，用 10 秒自我介紹', type: 'text', placeholder: '朋友的名字' },
+  { id: 3, text: '跟 Simon 認識超過五年的', type: 'text', placeholder: '朋友的名字' },
+  { id: 4, text: '目前正職工作「不是」設計師的', type: 'text', placeholder: '朋友的名字' },
+  { id: 5, text: '請寫出 Simon 的中文名字', type: 'text', placeholder: 'Simon 的中文名字' },
+  { id: 6, text: '跟你不認識的新朋友交換一個興趣', type: 'text', placeholder: '朋友名字 + 興趣' },
+  { id: 7, text: '在「台灣以外」的地方跟 Simon 見過面的人', type: 'text', placeholder: '地點 + 名字' },
+  { id: 8, text: '過去曾經和 Simon 一起工作過', type: 'text', placeholder: '朋友的名字' },
 ]
 
 const LINES = [
