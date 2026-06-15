@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { usePop } from '../hooks/useSfx'
+import illustrationBingo from '../asset/illustration_bingo.png'
 
 const TASKS = [
   { id: 0, text: '找到和自己一樣 MBTI 的朋友，請他簽名', type: 'text', placeholder: '朋友的名字' },
@@ -160,7 +161,7 @@ export default function Bingo({ me, onPlayingChange = () => {} }) {
     return (
       <div className="screen">
         <div className="msg-gate">
-          <div className="msg-gate-mark">🎯</div>
+          <img src={illustrationBingo} alt="" className="msg-gate-illust" />
           <div className="msg-gate-title">派對賓果</div>
           <div className="bingo-gate-desc">和現場朋友互動，完成任務連成兩條線就 BINGO！輸入通關密碼開始遊戲。</div>
           <div className={`code-boxes${shake ? ' shake' : ''}`}>

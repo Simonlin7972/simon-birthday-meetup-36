@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
+import illustrationMessage from '../asset/illustration_message.png'
 
 // 「給你的話」：先輸入通關密碼（來賓 PIN 反轉），通過後顯示 Simon 寫給這位來賓的話。
-export default function Message({ me }) {
+export default function Message({ me, onUnlockedChange = () => {} }) {
   const CODE = me.pin.split('').reverse().join('')
   const [digits, setDigits] = useState(['', '', '', ''])
   const [unlocked, setUnlocked] = useState(false)
@@ -12,6 +13,7 @@ export default function Message({ me }) {
   const submit = (value) => {
     if (value === CODE) {
       setUnlocked(true)
+      onUnlockedChange(true)
     } else {
       setError(true)
       setShake(true)
@@ -49,7 +51,7 @@ export default function Message({ me }) {
     return (
       <div className="screen">
         <div className="msg-gate">
-          <div className="msg-gate-mark">🔒</div>
+          <img src={illustrationMessage} alt="" className="msg-gate-illust" />
           <div className="msg-gate-title">給 {me.name} 的悄悄話</div>
           <div className="msg-gate-hint">輸入通關密碼解鎖</div>
           <div className={`code-boxes${shake ? ' shake' : ''}`}>
@@ -76,8 +78,16 @@ export default function Message({ me }) {
     )
   }
 
+  const exitMessage = () => {
+    setUnlocked(false)
+    onUnlockedChange(false)
+    setDigits(['', '', '', ''])
+    setError(false)
+  }
+
   return (
     <div className="screen">
+      <button className="bingo-exit" onClick={exitMessage}>回到主頁</button>
       <div className="msg-wrap">
         <div className="msg-from">Simon 給 {me.name} 的話</div>
         {me.fromSimon ? (

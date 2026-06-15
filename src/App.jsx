@@ -19,6 +19,7 @@ export default function App() {
   const [morphId, setMorphId] = useState(null) // 轉場中參與 morph 的卡片 id
   const [bingoKey, setBingoKey] = useState(0)
   const [bingoPlaying, setBingoPlaying] = useState(false) // 賓果遊戲進行中 → 隱藏 bottom bar
+  const [msgUnlocked, setMsgUnlocked] = useState(false) // 悄悄話已解鎖 → 隱藏 bottom bar
   const scrollRef = useRef(null)
   const bingoTapsRef = useRef([])
 
@@ -33,6 +34,7 @@ export default function App() {
   useEffect(() => {
     setSheet(null)
     setBingoPlaying(false)
+    setMsgUnlocked(false)
     if (scrollRef.current) scrollRef.current.scrollTop = 0
   }, [tab])
 
@@ -78,14 +80,14 @@ export default function App() {
 
   return (
     <div className={`app${entering ? ' enter' : ''}`}>
-      <div className={`scroll${bingoPlaying ? ' scroll-fullscreen' : ''}`} ref={scrollRef}>
+      <div className={`scroll${bingoPlaying || msgUnlocked ? ' scroll-fullscreen' : ''}`} ref={scrollRef}>
         {tab === 'profile' && <Profile me={me} />}
         {tab === 'guests' && <Guests me={me} onOpen={openGuest} activeId={sheet?.id ?? null} morphId={morphId} />}
-        {tab === 'message' && <Message me={me} />}
+        {tab === 'message' && <Message me={me} onUnlockedChange={setMsgUnlocked} />}
         {tab === 'wall' && <Wall />}
         {tab === 'bingo' && <Bingo key={bingoKey} me={me} onPlayingChange={setBingoPlaying} />}
       </div>
-      {!bingoPlaying && <TabBar active={tab} onChange={handleTab} />}
+      {!bingoPlaying && !msgUnlocked && <TabBar active={tab} onChange={handleTab} />}
       <GuestSheet guest={sheet} onClose={closeGuest} />
     </div>
   )

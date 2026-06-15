@@ -1140,7 +1140,7 @@ body::after {
 
 /* 給你的話：通關密碼 */
 .msg-gate {
-  min-height: 62vh;
+  min-height: calc(100dvh - env(safe-area-inset-top) - 26px - 96px - var(--safe-b));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1151,6 +1151,12 @@ body::after {
 
 .msg-gate-mark {
   font-size: 38px;
+  margin-bottom: 16px
+}
+
+.msg-gate-illust {
+  width: 120px;
+  height: auto;
   margin-bottom: 16px
 }
 
