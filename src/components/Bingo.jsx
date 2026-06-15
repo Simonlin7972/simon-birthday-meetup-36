@@ -39,7 +39,7 @@ function hashId(id) {
 const CONFETTI_COLORS = ['#e88b3a', '#f0a45a', '#c75b3f', '#804220', '#4a3322', '#f5ecdd']
 
 // 進入遊戲的通關密碼。
-const CODE = '0000'
+const CODE = '0626'
 
 export default function Bingo({ me, onPlayingChange = () => {} }) {
   const pop = usePop()

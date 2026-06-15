@@ -1,10 +1,8 @@
 import { useRef, useState } from 'react'
 
-// Simon 的生日：7/2 → 0702。輸入正確才能看到「給你的話」。
-const CODE = '0702'
-
-// 「給你的話」：先輸入通關密碼（Simon 生日 0702），通過後顯示 Simon 寫給這位來賓的話。
+// 「給你的話」：先輸入通關密碼（來賓 PIN 反轉），通過後顯示 Simon 寫給這位來賓的話。
 export default function Message({ me }) {
+  const CODE = me.pin.split('').reverse().join('')
   const [digits, setDigits] = useState(['', '', '', ''])
   const [unlocked, setUnlocked] = useState(false)
   const [error, setError] = useState(false)
@@ -73,7 +71,6 @@ export default function Message({ me }) {
             ))}
           </div>
           <div className={`code-err${error ? ' show' : ''}`}>密碼不對，再試一次 🤔</div>
-          <div className="code-tip">提示：Simon 的生日（月月日日）</div>
         </div>
       </div>
     )
