@@ -19,7 +19,7 @@ export default function Guests({ me, onOpen, activeId, morphId }) {
 
   return (
     <div className="screen screen-guests">
-      <div className="h-title h-title-bold">今晚的朋友們</div>
+      <div className="h-title h-title-bold">今晚的 {ordered.length} 位朋友們</div>
       <div className="h-sub">歡迎大家今晚互相聊聊認識！</div>
       <div className="rail" style={activeId != null || morphId != null ? { scrollSnapType: 'none' } : undefined}>
         {ordered.map((p) => {

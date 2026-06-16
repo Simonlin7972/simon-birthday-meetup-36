@@ -953,37 +953,37 @@ body::after {
   text-align: center
 }
 
-/* 卡片較多，改成兩排橫向滾動，少滑一半。
+/* 卡片較多，改成三排橫向滾動。
    grid-auto-flow: column → 依序由上而下填滿一欄再換下一欄 */
 .screen-guests .rail {
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   grid-auto-columns: min(79vw, 330px);
   align-items: stretch;
   padding-left: calc((100vw - min(79vw, 330px)) / 2);
   padding-right: calc((100vw - min(79vw, 330px)) / 2)
 }
 
-/* 卡片內文維持靠左；兩排版面下縮短高度讓兩張可同時入鏡 */
+/* 卡片內文維持靠左；三排版面下縮短高度讓三張可同時入鏡 */
 .screen-guests .gcard {
   text-align: left;
   min-height: 0;
-  padding: 18px 18px
+  padding: 14px 16px
 }
 
 /* 名字移到 avatar 右側，少一排 → 卡片更矮 */
 .gcard-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px
+  gap: 10px;
+  margin-bottom: 8px
 }
 
 .screen-guests .gcard .av {
-  width: 48px;
-  height: 48px;
-  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
   margin-bottom: 0;
   flex-shrink: 0
 }
