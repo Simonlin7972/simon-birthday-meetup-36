@@ -6,6 +6,7 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
   const CODE = me.pin.split('').reverse().join('')
   const [digits, setDigits] = useState(['', '', '', ''])
   const [unlocked, setUnlocked] = useState(false)
+  const [revealed, setRevealed] = useState(false)
   const [error, setError] = useState(false)
   const [shake, setShake] = useState(false)
   const [typed, setTyped] = useState('')
@@ -15,8 +16,20 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
 
   const bodyText = me.fromSimon || ''
 
+  // 解鎖後播放信封動畫，結束才讓信紙就定位（reduced-motion 直接跳過）
   useEffect(() => {
-    if (!unlocked || !bodyText) return
+    if (!unlocked) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      setRevealed(true)
+      return
+    }
+    const id = setTimeout(() => setRevealed(true), 2300)
+    return () => clearTimeout(id)
+  }, [unlocked])
+
+  useEffect(() => {
+    if (!revealed || !bodyText) return
     setTyped('')
     setShowSign(false)
     setCursorDone(false)
@@ -31,7 +44,7 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
       }
     }, 70)
     return () => clearInterval(id)
-  }, [unlocked, bodyText])
+  }, [revealed, bodyText])
 
   const submit = (value) => {
     if (value === CODE) {
@@ -103,6 +116,7 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
 
   const exitMessage = () => {
     setUnlocked(false)
+    setRevealed(false)
     onUnlockedChange(false)
     setDigits(['', '', '', ''])
     setError(false)
@@ -111,7 +125,22 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
   return (
     <div className="screen screen-letter">
       <button className="bingo-exit" onClick={exitMessage}>{"回到主頁"}</button>
-      <div className="letter">
+      {!revealed && (
+        <div className="env-stage" aria-hidden="true">
+          <div className="env">
+            <div className="env-body" />
+            <div className="env-letter">
+              <span className="env-letter-line" />
+              <span className="env-letter-line" />
+              <span className="env-letter-line short" />
+            </div>
+            <div className="env-pocket" />
+            <div className="env-flap" />
+            <div className="env-seal">S</div>
+          </div>
+        </div>
+      )}
+      <div className={`letter${revealed ? ' in' : ' pre'}`}>
         <div className="letter-lines" />
         <div className="letter-content">
           <div className="letter-to">Dear {me.name},</div>
