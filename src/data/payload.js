@@ -408,7 +408,7 @@ export const people = [
   },
   {
     id: 'g32',
-    name: 'Ian',
+    name: '米奇妙妙屋',
     pin: '7587',
     intro: '其實我叫 Ian、過動工程師、準流水僧',
     howMet: '詳情請洽過動工程師 IG－社恐生日長什麼樣子篇',
