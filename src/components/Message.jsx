@@ -24,7 +24,7 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
       setRevealed(true)
       return
     }
-    const id = setTimeout(() => setRevealed(true), 2300)
+    const id = setTimeout(() => setRevealed(true), 3050)
     return () => clearTimeout(id)
   }, [unlocked])
 
@@ -42,7 +42,7 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
         setTimeout(() => setShowSign(true), 400)
         setTimeout(() => setCursorDone(true), 1200)
       }
-    }, 70)
+    }, 105)
     return () => clearInterval(id)
   }, [revealed, bodyText])
 
