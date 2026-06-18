@@ -9,8 +9,12 @@ import Message from './components/Message'
 import Wall from './components/Wall'
 import Bingo from './components/Bingo'
 import GuestSheet from './components/GuestSheet'
+import DesignSystem from './components/DesignSystem'
 
 export default function App() {
+  // 設計系統參考頁：網址加 ?ds 直接進入，跳過 Splash / Gate。
+  if (typeof window !== 'undefined' && window.location.search.includes('ds'))
+    return <DesignSystem />
   const [started, setStarted] = useState(false) // 是否已通過啟動畫面
   const [me, setMe] = useState(null)        // 目前登入的來賓
   const [entering, setEntering] = useState(false) // 入場動畫進行中
