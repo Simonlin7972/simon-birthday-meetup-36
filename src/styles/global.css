@@ -2297,12 +2297,6 @@ body::after {
   display: flex;
   overflow: hidden;
   container-type: size;
-  animation: sl-in .45s cubic-bezier(.2, .8, .2, 1) both;
-}
-
-@keyframes sl-in {
-  from { opacity: 0; transform: translateY(14px) scale(.98); }
-  to { opacity: 1; transform: none; }
 }
 
 .sl-body {
@@ -2391,10 +2385,11 @@ body::after {
   margin-top: 1cqh;
 }
 .sl-av {
-  width: 9cqh;
-  height: 9cqh;
-  border: 2px solid var(--ink-line);
-  font-size: 3cqh;
+  width: 13cqh;
+  height: 13cqh;
+  border: none;
+  box-shadow: none;
+  font-size: 4cqh;
 }
 
 /* 引言 */
@@ -2455,6 +2450,23 @@ body::after {
   color: var(--faint);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .sl-card { animation: none; }
+/* 簡報游標：半透明螢光圓點（Canva 簡報模式風）。隱藏原生 cursor */
+.slides { cursor: none; }
+.sl-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(232, 139, 58, .9), rgba(232, 139, 58, .35) 60%, transparent 72%);
+  box-shadow: 0 0 16px 6px rgba(232, 139, 58, .55);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity .25s;
+  will-change: transform;
 }
+.sl-cursor.on { opacity: 1; }

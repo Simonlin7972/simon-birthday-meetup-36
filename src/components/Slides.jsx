@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { config, people } from '../data/payload'
 import Avatar from './Avatar'
 
@@ -111,10 +111,27 @@ export default function Slides() {
     setTouchX(null)
   }
 
+  // 螢光圓點游標：跟著滑鼠移動，靜止一段時間後淡出
+  const cursorRef = useRef(null)
+  useEffect(() => {
+    const dot = cursorRef.current
+    if (!dot) return
+    let hideId
+    const onMove = (e) => {
+      dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
+      dot.classList.add('on')
+      clearTimeout(hideId)
+      hideId = setTimeout(() => dot.classList.remove('on'), 2200)
+    }
+    window.addEventListener('pointermove', onMove)
+    return () => { window.removeEventListener('pointermove', onMove); clearTimeout(hideId) }
+  }, [])
+
   const Slide = slides[i]
 
   return (
     <div className="slides" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <div className="sl-cursor" ref={cursorRef} />
       <div className="sl-stage">
         <div className="sl-card" key={i}>
           <Slide />
