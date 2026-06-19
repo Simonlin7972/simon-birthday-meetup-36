@@ -88,7 +88,7 @@ export default function Message({ me, onUnlockedChange = () => {} }) {
       <div className="screen">
         <div className="msg-gate">
           <img src={illustrationMessage} alt="" className="msg-gate-illust" />
-          <div className="msg-gate-title">給 {me.name} 的悄悄話</div>
+          <div className="msg-gate-title">Simon 給 {me.name} 的悄悄話</div>
           <div className="msg-gate-hint">輸入通關密碼解鎖</div>
           <div className={`code-boxes${shake ? ' shake' : ''}`}>
             {digits.map((d, i) => (
