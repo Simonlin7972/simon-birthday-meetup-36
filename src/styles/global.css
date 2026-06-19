@@ -864,6 +864,41 @@ body::after {
   mix-blend-mode: normal
 }
 
+/* 雙擊頭像彩蛋：彈跳 + 旋轉 */
+.av-bounce {
+  animation: av-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes av-bounce {
+  0%   { transform: scale(1) rotate(0); }
+  30%  { transform: scale(1.25) rotate(-12deg); }
+  55%  { transform: scale(0.92) rotate(10deg); }
+  75%  { transform: scale(1.08) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* confetti 粒子（掛在 body 上，fixed 定位） */
+.av-confetti {
+  position: fixed;
+  z-index: 999;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%);
+  animation: av-confetti-fly 0.7s ease-out forwards;
+}
+
+@keyframes av-confetti-fly {
+  0%   { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(0.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .av-bounce { animation: none; }
+}
+
 /* profile */
 /* 共用卡片容器：背景 + 統一圓角 + 統一立體陰影 */
 .card {
