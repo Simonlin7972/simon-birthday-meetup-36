@@ -107,7 +107,50 @@ export function playKey() {
   osc.stop(now + 0.025)
 }
 
+// ── 報到成功歡呼（PIN 正確、撒花轉場）──────────────
+export function playFanfare() {
+  const c = getCtx()
+  const now = c.currentTime
+  // 上行大三和弦琶音，帶一聲頂音閃光
+  const notes = [523.25, 659.25, 783.99, 1046.5]
+  notes.forEach((f, i) => {
+    const t = now + i * 0.09
+    const osc = c.createOscillator()
+    osc.type = 'triangle'
+    osc.frequency.setValueAtTime(f, t)
+
+    const gain = c.createGain()
+    gain.gain.setValueAtTime(0.0001, t)
+    gain.gain.exponentialRampToValueAtTime(0.3, t + 0.02)
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.5)
+
+    osc.connect(gain).connect(c.destination)
+    osc.start(t)
+    osc.stop(t + 0.5)
+  })
+
+  // 撒花「咻」的氣聲噪音層
+  const tail = now + 0.18
+  const bufLen = Math.floor(c.sampleRate * 0.5)
+  const buf = c.createBuffer(1, bufLen, c.sampleRate)
+  const data = buf.getChannelData(0)
+  for (let i = 0; i < bufLen; i++) data[i] = (Math.random() * 2 - 1) * 0.4
+  const noise = c.createBufferSource()
+  noise.buffer = buf
+  const hp = c.createBiquadFilter()
+  hp.type = 'highpass'
+  hp.frequency.value = 3000
+  const ng = c.createGain()
+  ng.gain.setValueAtTime(0.0001, tail)
+  ng.gain.exponentialRampToValueAtTime(0.18, tail + 0.04)
+  ng.gain.exponentialRampToValueAtTime(0.001, tail + 0.45)
+  noise.connect(hp).connect(ng).connect(c.destination)
+  noise.start(tail)
+  noise.stop(tail + 0.5)
+}
+
 // React hooks
 export function useWoodTap() { return playWoodTap }
 export function usePop() { return playPop }
 export function useKey() { return playKey }
+export function useFanfare() { return playFanfare }

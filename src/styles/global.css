@@ -2107,6 +2107,11 @@ body::after {
   pointer-events: none
 }
 
+/* 報到撒花要蓋在展開圓圈（z 9999）之上 */
+.gate-confetti {
+  z-index: 10000
+}
+
 .confetti {
   position: absolute;
   top: -20px;
