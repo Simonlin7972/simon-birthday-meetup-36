@@ -11,6 +11,7 @@ import Bingo from './components/Bingo'
 import GuestSheet from './components/GuestSheet'
 import DesignSystem from './components/DesignSystem'
 import Slides from './components/Slides'
+import Export from './components/Export'
 
 export default function App() {
   // 簡報模式：網址 /slides 或 ?slides 直接進入，跳過 Splash / Gate。
@@ -18,6 +19,11 @@ export default function App() {
     (window.location.pathname.replace(/\/$/, '').endsWith('/slides') ||
       window.location.search.includes('slides')))
     return <Slides />
+  // 全畫面總覽頁：網址 /export 或 ?export 直接進入，一次檢視所有畫面。
+  if (typeof window !== 'undefined' &&
+    (window.location.pathname.replace(/\/$/, '').endsWith('/export') ||
+      window.location.search.includes('export')))
+    return <Export />
   // 設計系統參考頁：網址加 ?ds 直接進入，跳過 Splash / Gate。
   if (typeof window !== 'undefined' && window.location.search.includes('ds'))
     return <DesignSystem />

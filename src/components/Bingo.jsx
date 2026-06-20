@@ -42,13 +42,13 @@ const CONFETTI_COLORS = ['#e88b3a', '#f0a45a', '#c75b3f', '#804220', '#4a3322', 
 // 進入遊戲的通關密碼。
 const CODE = '0626'
 
-export default function Bingo({ me, onPlayingChange = () => {} }) {
+export default function Bingo({ me, onPlayingChange = () => {}, previewPlaying = false, previewModal = false, previewCelebrate = false }) {
   const pop = usePop()
   const storageKey = `bingo_${me.id}`
   const inputRef = useRef(null)
 
   // 第一頁：標題＋描述＋PIN，通過後才正式進入遊戲畫面。遊戲紀錄始終保存在 localStorage。
-  const [playing, setPlaying] = useState(false)
+  const [playing, setPlaying] = useState(previewPlaying)
   const [digits, setDigits] = useState(['', '', '', ''])
   const [gateError, setGateError] = useState(false)
   const [shake, setShake] = useState(false)
@@ -110,9 +110,9 @@ export default function Bingo({ me, onPlayingChange = () => {} }) {
     return Array(9).fill(null)
   })
 
-  const [activeCell, setActiveCell] = useState(null)
+  const [activeCell, setActiveCell] = useState(previewModal ? 0 : null)
   const [inputVal, setInputVal] = useState('')
-  const [showBingo, setShowBingo] = useState(false)
+  const [showBingo, setShowBingo] = useState(previewCelebrate)
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify({ order, cells }))

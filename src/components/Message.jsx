@@ -2,10 +2,10 @@ import { useRef, useState, useEffect } from 'react'
 import illustrationMessage from '../asset/illustration_message.png'
 
 // 「給你的話」：先輸入通關密碼（來賓 PIN 反轉），通過後顯示 Simon 寫給這位來賓的話。
-export default function Message({ me, onUnlockedChange = () => {} }) {
+export default function Message({ me, onUnlockedChange = () => {}, previewUnlocked = false }) {
   const CODE = me.pin.split('').reverse().join('')
   const [digits, setDigits] = useState(['', '', '', ''])
-  const [unlocked, setUnlocked] = useState(false)
+  const [unlocked, setUnlocked] = useState(previewUnlocked)
   const [revealed, setRevealed] = useState(false)
   const [error, setError] = useState(false)
   const [shake, setShake] = useState(false)

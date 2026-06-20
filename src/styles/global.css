@@ -2505,3 +2505,88 @@ body::after {
   will-change: transform;
 }
 .sl-cursor.on { opacity: 1; }
+
+/* ===== 全畫面總覽頁 /export ===== */
+/* 每個 tile 是一個 iframe（單畫面模式 ?export&screen=<id>），畫面裡的 100vh/100vw/dvh
+   與 position:fixed 都以 iframe 框為基準正確解析，不需任何 hack。 */
+.export-single { height: 100%; }
+/* iframe（單畫面）內隱藏 native scrollbar，畫面仍可捲動。只作用於 export 預覽，不影響正式 app。 */
+.export-single * { scrollbar-width: none; -ms-overflow-style: none; }
+.export-single *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+.export-page {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg);
+  color: var(--ink);
+  padding: 28px 20px calc(56px + var(--safe-b));
+}
+.export-head {
+  max-width: 1280px;
+  margin: 0 auto 28px;
+  padding-bottom: 18px;
+  border-bottom: 1.5px solid var(--line2);
+}
+.export-head a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--line2);
+}
+
+.export-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px 24px;
+  justify-items: center;
+}
+@media (min-width: 820px) {
+  .export-grid { grid-template-columns: repeat(auto-fill, minmax(370px, 1fr)); }
+}
+
+.export-tile { width: 370px; max-width: 100%; }
+.export-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 手機外框：固定邏輯寬 300，內含假狀態列 + viewport。 */
+.export-frame {
+  width: 100%;
+  border-radius: 34px;
+  background: var(--ink-line);
+  padding: 8px;
+  box-shadow: 6px 6px 0 rgba(30, 26, 23, .12);
+  overflow: hidden;
+}
+.export-statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--serif);
+  font-size: 11px;
+  letter-spacing: .03em;
+  color: var(--btn-ink);
+  padding: 4px 14px 8px;
+}
+.export-statusbar-icons { font-size: 9px; opacity: .85; }
+
+/* 內容視窗：固定高度的窗口，裝一支 iframe（手機畫面）。 */
+.export-viewport {
+  position: relative;
+  height: 780px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.export-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
