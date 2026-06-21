@@ -5,8 +5,8 @@ import illustrationBingo from '../asset/illustration_bingo.png'
 const TASKS = [
   { id: 0, text: '和自己一樣 MBTI 的朋友', type: 'text', placeholder: '名字 + MBTI' },
   { id: 1, text: '上衣顏色穿一樣的朋友', type: 'text', placeholder: '朋友的名字' },
-  { id: 2, text: '一位現場不認識的朋友，用 10 秒自我介紹', type: 'text', placeholder: '朋友的名字' },
-  { id: 3, text: '跟 Simon 認識超過五年的', type: 'text', placeholder: '朋友的名字' },
+  { id: 2, text: '一位現場不認識的朋友，用 15 秒自我介紹', type: 'text', placeholder: '朋友的名字' },
+  { id: 3, text: '跟 Simon 認識超過五年的朋友', type: 'text', placeholder: '朋友的名字' },
   { id: 4, text: '目前正職工作「不是」設計師', type: 'text', placeholder: '朋友的名字' },
   { id: 5, text: '請寫出 Simon 的中文名字', type: 'text', placeholder: 'Simon 的中文名字' },
   { id: 6, text: '跟不認識的新朋友交換一個興趣', type: 'text', placeholder: '朋友名字 + 興趣' },
