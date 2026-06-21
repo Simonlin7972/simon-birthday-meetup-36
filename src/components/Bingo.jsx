@@ -7,11 +7,11 @@ const TASKS = [
   { id: 1, text: '上衣顏色穿一樣的朋友', type: 'text', placeholder: '朋友的名字' },
   { id: 2, text: '一位現場不認識的朋友，用 10 秒自我介紹', type: 'text', placeholder: '朋友的名字' },
   { id: 3, text: '跟 Simon 認識超過五年的', type: 'text', placeholder: '朋友的名字' },
-  { id: 4, text: '目前正職工作「不是」設計師的', type: 'text', placeholder: '朋友的名字' },
+  { id: 4, text: '目前正職工作「不是」設計師', type: 'text', placeholder: '朋友的名字' },
   { id: 5, text: '請寫出 Simon 的中文名字', type: 'text', placeholder: 'Simon 的中文名字' },
-  { id: 6, text: '跟你不認識的新朋友交換一個興趣', type: 'text', placeholder: '朋友名字 + 興趣' },
+  { id: 6, text: '跟不認識的新朋友交換一個興趣', type: 'text', placeholder: '朋友名字 + 興趣' },
   { id: 7, text: '在「台灣以外」的地方跟 Simon 見過面的人', type: 'text', placeholder: '地點 + 名字' },
-  { id: 8, text: '過去曾經和 Simon 一起工作過', type: 'text', placeholder: '朋友的名字' },
+  { id: 8, text: '過去曾和 Simon 一起工作過', type: 'text', placeholder: '朋友的名字' },
 ]
 
 const LINES = [
@@ -42,7 +42,7 @@ const CONFETTI_COLORS = ['#e88b3a', '#f0a45a', '#c75b3f', '#804220', '#4a3322', 
 // 進入遊戲的通關密碼。
 const CODE = '0626'
 
-export default function Bingo({ me, onPlayingChange = () => {}, previewPlaying = false, previewModal = false, previewCelebrate = false }) {
+export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying = false, previewModal = false, previewCelebrate = false }) {
   const pop = usePop()
   const storageKey = `bingo_${me.id}`
   const inputRef = useRef(null)
