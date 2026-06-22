@@ -107,6 +107,114 @@ export function playKey() {
   osc.stop(now + 0.025)
 }
 
+// ── 信封開封（蠟封啪一聲 + 紙張撕裂感）──────────────
+export function playEnvelopeOpen() {
+  const c = getCtx()
+  const now = c.currentTime
+
+  // 低頻「啪」：蠟封迸開
+  const osc = c.createOscillator()
+  osc.type = 'triangle'
+  osc.frequency.setValueAtTime(180, now)
+  osc.frequency.exponentialRampToValueAtTime(70, now + 0.09)
+  const og = c.createGain()
+  og.gain.setValueAtTime(0.35, now)
+  og.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
+  osc.connect(og).connect(c.destination)
+  osc.start(now)
+  osc.stop(now + 0.12)
+
+  // 高頻撕裂噪音：封口掀開
+  const bufLen = Math.floor(c.sampleRate * 0.18)
+  const buf = c.createBuffer(1, bufLen, c.sampleRate)
+  const data = buf.getChannelData(0)
+  for (let i = 0; i < bufLen; i++) {
+    const env = 1 - i / bufLen
+    data[i] = (Math.random() * 2 - 1) * 0.5 * env
+  }
+  const noise = c.createBufferSource()
+  noise.buffer = buf
+  const bp = c.createBiquadFilter()
+  bp.type = 'bandpass'
+  bp.frequency.value = 3200
+  bp.Q.value = 0.7
+  const ng = c.createGain()
+  ng.gain.setValueAtTime(0.0001, now + 0.02)
+  ng.gain.exponentialRampToValueAtTime(0.22, now + 0.06)
+  ng.gain.exponentialRampToValueAtTime(0.001, now + 0.2)
+  noise.connect(bp).connect(ng).connect(c.destination)
+  noise.start(now + 0.02)
+  noise.stop(now + 0.2)
+}
+
+// ── 信紙滑出（柔和紙張摩擦）──────────────────────
+export function playPaperSlide() {
+  const c = getCtx()
+  const now = c.currentTime
+  const dur = 0.45
+
+  // 篩過的噪音，慢起慢落 → 紙張滑動的「咻—」
+  const bufLen = Math.floor(c.sampleRate * dur)
+  const buf = c.createBuffer(1, bufLen, c.sampleRate)
+  const data = buf.getChannelData(0)
+  for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1
+  const noise = c.createBufferSource()
+  noise.buffer = buf
+
+  const bp = c.createBiquadFilter()
+  bp.type = 'bandpass'
+  bp.frequency.setValueAtTime(1800, now)
+  bp.frequency.linearRampToValueAtTime(4200, now + dur)
+  bp.Q.value = 0.6
+
+  const g = c.createGain()
+  g.gain.setValueAtTime(0.0001, now)
+  g.gain.linearRampToValueAtTime(0.16, now + dur * 0.45)
+  g.gain.exponentialRampToValueAtTime(0.001, now + dur)
+
+  noise.connect(bp).connect(g).connect(c.destination)
+  noise.start(now)
+  noise.stop(now + dur)
+}
+
+// ── 打字機按鍵（信件逐字浮現）──────────────────────
+export function playTypewriter() {
+  const c = getCtx()
+  const now = c.currentTime
+
+  // 乾淨的「嗒」：極短高頻噪音脈衝
+  const bufLen = Math.floor(c.sampleRate * 0.012)
+  const buf = c.createBuffer(1, bufLen, c.sampleRate)
+  const data = buf.getChannelData(0)
+  for (let i = 0; i < bufLen; i++) {
+    const env = 1 - i / bufLen
+    data[i] = (Math.random() * 2 - 1) * env
+  }
+  const noise = c.createBufferSource()
+  noise.buffer = buf
+  const hp = c.createBiquadFilter()
+  hp.type = 'highpass'
+  hp.frequency.value = 4000
+  const ng = c.createGain()
+  ng.gain.setValueAtTime(0.16, now)
+  ng.gain.exponentialRampToValueAtTime(0.001, now + 0.012)
+  noise.connect(hp).connect(ng).connect(c.destination)
+  noise.start(now)
+  noise.stop(now + 0.012)
+
+  // 輕脆敲擊感：短促高音 sine 點
+  const osc = c.createOscillator()
+  osc.type = 'sine'
+  osc.frequency.setValueAtTime(1500, now)
+  osc.frequency.exponentialRampToValueAtTime(800, now + 0.015)
+  const og = c.createGain()
+  og.gain.setValueAtTime(0.07, now)
+  og.gain.exponentialRampToValueAtTime(0.001, now + 0.015)
+  osc.connect(og).connect(c.destination)
+  osc.start(now)
+  osc.stop(now + 0.015)
+}
+
 // ── 報到成功歡呼（PIN 正確、撒花轉場）──────────────
 export function playFanfare() {
   const c = getCtx()
@@ -154,3 +262,6 @@ export function useWoodTap() { return playWoodTap }
 export function usePop() { return playPop }
 export function useKey() { return playKey }
 export function useFanfare() { return playFanfare }
+export function useEnvelopeOpen() { return playEnvelopeOpen }
+export function usePaperSlide() { return playPaperSlide }
+export function useTypewriter() { return playTypewriter }

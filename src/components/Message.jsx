@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import illustrationMessage from '../asset/illustration_message.png'
+import { playEnvelopeOpen, playPaperSlide } from '../hooks/useSfx'
 
 // 「給你的話」：先輸入通關密碼（來賓 PIN 反轉），通過後顯示 Simon 寫給這位來賓的話。
 export default function Message({ me, onUnlockedChange = () => {}, previewUnlocked = false }) {
@@ -24,8 +25,15 @@ export default function Message({ me, onUnlockedChange = () => {}, previewUnlock
       setRevealed(true)
       return
     }
+    // 配合 CSS 動畫節奏：蠟封迸開(0.5s) → 信紙滑出(1.35s) → 就定位(3.05s)
+    const tOpen = setTimeout(() => playEnvelopeOpen(), 500)
+    const tSlide = setTimeout(() => playPaperSlide(), 1350)
     const id = setTimeout(() => setRevealed(true), 3050)
-    return () => clearTimeout(id)
+    return () => {
+      clearTimeout(tOpen)
+      clearTimeout(tSlide)
+      clearTimeout(id)
+    }
   }, [unlocked])
 
   useEffect(() => {
@@ -42,7 +50,7 @@ export default function Message({ me, onUnlockedChange = () => {}, previewUnlock
         setTimeout(() => setShowSign(true), 400)
         setTimeout(() => setCursorDone(true), 1200)
       }
-    }, 105)
+    }, 150)
     return () => clearInterval(id)
   }, [revealed, bodyText])
 
