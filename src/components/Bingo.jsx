@@ -113,6 +113,18 @@ export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying 
   const [activeCell, setActiveCell] = useState(previewModal ? 0 : null)
   const [inputVal, setInputVal] = useState('')
   const [showBingo, setShowBingo] = useState(previewCelebrate)
+  const [dealing, setDealing] = useState(false)
+
+  // 進入遊戲時，卡牌依序（左到右、上到下）翻開
+  useEffect(() => {
+    if (!playing) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+    setDealing(true)
+    const total = 8 * 70 + 450 // 最後一格延遲 + 動畫時長
+    const id = setTimeout(() => setDealing(false), total)
+    return () => clearTimeout(id)
+  }, [playing])
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify({ order, cells }))
@@ -211,7 +223,8 @@ export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying 
           return (
             <button
               key={cellIdx}
-              className={`bingo-cell${done ? ' done' : ''}${inLine ? ' in-line' : ''}`}
+              className={`bingo-cell${done ? ' done' : ''}${inLine ? ' in-line' : ''}${dealing ? ' deal' : ''}`}
+              style={dealing ? { animationDelay: `${cellIdx * 70}ms` } : undefined}
               onClick={() => handleCellClick(cellIdx)}
             >
               {done && <span className="bingo-check">✓</span>}
