@@ -2519,6 +2519,171 @@ body::after {
 }
 .sl-cursor.on { opacity: 1; }
 
+/* 退出簡報鈕（present 模式右上） */
+.sl-exit {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 18px);
+  left: 24px;
+  z-index: 6;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 rgba(30, 26, 23, .12);
+}
+.sl-exit:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(30, 26, 23, .12); }
+
+/* ===== 簡報總覽（列表 / 格狀）===== */
+.slides-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden; /* y-scroll 交給 .sl-overview，自身不產生捲動/溢位 */
+}
+
+/* 右上工具列：列表/格狀切換 + 全螢幕模式 */
+.sl-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: calc(env(safe-area-inset-top) + 16px) 24px 14px;
+}
+
+/* 分段切換（segmented control） */
+.sl-seg {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--surface2);
+  border: 1.5px solid var(--line2);
+}
+.sl-seg-btn {
+  border: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--muted);
+  padding: 8px 16px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background .18s, color .18s, box-shadow .18s;
+}
+.sl-seg-btn.on {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 4px rgba(30, 26, 23, .12);
+}
+
+/* 全螢幕模式鈕：暖色實心 */
+.sl-fs-btn {
+  border: none;
+  background: var(--gold);
+  color: var(--btn-ink);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--btn-edge);
+  transition: transform .12s, box-shadow .12s;
+}
+.sl-fs-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--btn-edge); }
+
+/* 捲動容器 */
+.sl-overview {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 24px calc(40px + var(--safe-b));
+}
+
+/* 列表：直向單欄堆疊 */
+.sl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 格狀：填滿整列，最多 5 欄。窄螢幕逐級減欄，卡片才不會太小。 */
+.sl-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 28px 24px;
+}
+@media (max-width: 1280px) { .sl-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 980px)  { .sl-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px)  { .sl-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.sl-tile-label {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: var(--faint);
+  margin: 0 0 8px 2px;
+}
+
+/* 縮圖容器：16:9 點擊鈕。寬度由格線/列表欄決定。
+   做法：內部 .sl-card 用固定參考尺寸 1280×720 渲染（此時 container-type:size 的
+   cqh/cqw 能正確解析、字級正常），再用 transform:scale 縮到容器寬度。
+   原因：把 size-container 的尺寸交給 aspect-ratio 推導時，Chromium 會把 container-
+   query 量測值降級成極小值（實測 100cqh 只有 ~22px），導致字級全部變成 ~2px。
+   改用固定尺寸 + scale 可完全避開此問題，且縮圖 100% 忠實還原簡報畫面。
+   邊框/圓角/陰影放在外層 wrapper（scale 後內層 border 會被縮到看不見）。 */
+.sl-thumb {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  container-type: inline-size; /* 提供穩定的 100cqw 給內層 scale 用 */
+  overflow: hidden;
+  padding: 0;
+  background: var(--surface);
+  border: 2px solid var(--ink-line);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 rgba(30, 26, 23, .12);
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+.sl-thumb:hover { transform: translateY(-3px); box-shadow: 8px 10px 0 rgba(30, 26, 23, .14); }
+.sl-thumb:active { transform: translateY(0); box-shadow: 4px 4px 0 rgba(30, 26, 23, .12); }
+
+/* 縮圖內的卡片：固定 1280×720 參考畫布，再縮放填滿 wrapper。覆蓋 present 的尺寸/外框。 */
+.sl-thumb .sl-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 720px;
+  aspect-ratio: auto;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transform-origin: top left;
+  transform: scale(calc(100cqw / 1280px));
+}
+
+@media (max-width: 480px) {
+  .sl-grid { grid-template-columns: 1fr; }
+  .sl-overview { padding-inline: 16px; }
+}
+
 /* ===== 全畫面總覽頁 /export ===== */
 /* 每個 tile 是一個 iframe（單畫面模式 ?export&screen=<id>），畫面裡的 100vh/100vw/dvh
    與 position:fixed 都以 iframe 框為基準正確解析，不需任何 hack。 */
