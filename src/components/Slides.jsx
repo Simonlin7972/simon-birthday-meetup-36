@@ -6,12 +6,14 @@ import Avatar from './Avatar'
 // 三種檢視：grid 格狀總覽（預設）/ list 列表總覽 / present 全螢幕簡報。
 //   - 總覽用右上 toolbar 切 列表/格狀，「全螢幕模式」或點任一頁 → 進 present。
 //   - present 用真・瀏覽器全螢幕（requestFullscreen），ESC / ✕ 退回總覽。
-// 5 頁 deck：介紹活動 → 派對資訊 → 來賓 → 給大家的話 → 感謝。
-// 內容都是純文字，之後直接改這個檔案即可。縮圖直接縮放真實卡片（cqh/cqw 自動縮放）。
+// 10 頁 deck（現場流程簡報）：封面 → 來賓 → Agenda → 開 App → 賓果 → 悄悄話
+//   → 朋友分享 → 蛋糕 → 大合照 → 感謝。（編號沿用 P1–P11 但無 P7。）
+// 內容都是純文字 / placeholder，之後直接改這個檔案即可。縮圖直接縮放真實卡片（cqh/cqw 自動縮放）。
+// 缺圖頁先放 .sl-ph placeholder 框；之後丟圖進 src/asset/ 再把框換成 <img>。
 
 // 每頁一個物件，render 回傳該頁主體。改文案改這裡。
 const slides = [
-  // 1. 封面 / 介紹活動
+  // P1. 封面
   () => (
     <div className="sl-body sl-cover">
       <div className="sl-kicker">{config.subtitle}</div>
@@ -25,61 +27,116 @@ const slides = [
     </div>
   ),
 
-  // 2. 派對資訊
+  // P2. 今天的來賓
   () => (
     <div className="sl-body">
-      <div className="sl-kicker">活動資訊</div>
-      <h2 className="sl-h2">時間 & 地點</h2>
-      <div className="sl-info">
-        <div className="sl-info-row">
-          <span className="sl-info-label">日期</span>
-          <span className="sl-info-val">2026 / 6 / 26（五）</span>
-        </div>
-        <div className="sl-info-row">
-          <span className="sl-info-label">場地</span>
-          <span className="sl-info-val">M310</span>
-        </div>
-        <div className="sl-info-row">
-          <span className="sl-info-label">主題</span>
-          <span className="sl-info-val">生日 & 告別派對</span>
-        </div>
-      </div>
-      <p className="sl-lead">帶上你自己就好，其他交給今晚。</p>
-    </div>
-  ),
-
-  // 3. 來賓
-  () => (
-    <div className="sl-body">
-      <div className="sl-kicker">今晚的人</div>
-      <h2 className="sl-h2">{people.length} 位朋友</h2>
-      <p className="sl-lead">大學室友、前同事、設計圈、社群夥伴⋯⋯各種緣分，今晚同框。</p>
+      <h2 className="sl-h2">歡迎各位參加今天的活動！</h2>
+      <p className="sl-lead">大學同學、前同事、設計圈好朋友、創業/社群夥伴</p>
       <div className="sl-avatars">
-        {people.slice(0, 24).map((p) => (
+        {people.map((p) => (
           <Avatar key={p.id} person={p} className="sl-av" />
         ))}
       </div>
     </div>
   ),
 
-  // 4. 給大家的話
+  // P3. Agenda
   () => (
     <div className="sl-body">
-      <div className="sl-kicker">想說的話</div>
-      <h2 className="sl-h2">謝謝你們，<br />陪我走到這裡</h2>
-      <p className="sl-quote">
-        「有人陪我八年，有人才認識一個月，<br />
-        但你們每一個，都在我這趟路上留下了東西。」
-      </p>
+      <div className="sl-kicker">Agenda</div>
+      <h2 className="sl-h2">今天活動的流程</h2>
+      <div className="sl-agenda">
+        <div className="sl-agenda-row">
+          <span className="sl-agenda-time">19:00–19:30</span>
+          <span className="sl-agenda-desc">歡迎大家 + 吃吃喝喝！</span>
+        </div>
+        <div className="sl-agenda-row">
+          <span className="sl-agenda-time">19:30–20:00</span>
+          <span className="sl-agenda-desc">小遊戲時間</span>
+        </div>
+        <div className="sl-agenda-row">
+          <span className="sl-agenda-time">20:00–21:30</span>
+          <span className="sl-agenda-desc">等等就知道 :)</span>
+        </div>
+        <div className="sl-agenda-row">
+          <span className="sl-agenda-time">21:30</span>
+          <span className="sl-agenda-desc">大家一起大合照！</span>
+        </div>
+        <div className="sl-agenda-row">
+          <span className="sl-agenda-time">21:30–22:00</span>
+          <span className="sl-agenda-desc">自由交流時間</span>
+        </div>
+      </div>
     </div>
   ),
 
-  // 5. 感謝
+  // P4. 打開今天活動 App
+  () => (
+    <div className="sl-body sl-cover">
+      <div className="sl-kicker">Let's go</div>
+      <h2 className="sl-h2">用這個 App 體驗今天的活動</h2>
+      <div className="sl-ph sl-ph-qr">QR Code 待上傳</div>
+      <p className="sl-lead">登入方式：使用你手上的 PIN 碼</p>
+    </div>
+  ),
+
+  // P5. 賓果遊戲時間
+  () => (
+    <div className="sl-body sl-cover">
+      <div className="sl-kicker">Game time</div>
+      <h2 className="sl-h2">賓果遊戲時間</h2>
+      <div className="sl-ph sl-ph-ui">賓果遊戲 UI 圖待上傳</div>
+      <div className="sl-pass">
+        <span className="sl-pass-label">輸入 Simon 的生日當作密碼</span>
+        <span className="sl-pass-code">0702</span>
+      </div>
+    </div>
+  ),
+
+  // P6. 悄悄話
+  () => (
+    <div className="sl-body sl-cover">
+      <div className="sl-kicker">Psst…</div>
+      <h2 className="sl-h2">Simon 想和大家說的悄悄話</h2>
+      <div className="sl-ph sl-ph-ui">悄悄話頁面 UI 圖待上傳</div>
+      <div className="sl-pass">
+        <span className="sl-pass-label">密碼</span>
+        <span className="sl-pass-code">PIN 碼反著打</span>
+      </div>
+    </div>
+  ),
+
+  // P8. 朋朋們的分享時間
+  () => (
+    <div className="sl-body sl-cover">
+      <div className="sl-kicker">Share</div>
+      <h2 className="sl-h2">好朋友們的<br />分享時間</h2>
+      <p className="sl-lead">把麥克風交給你們，說說我們之間的故事。</p>
+    </div>
+  ),
+
+  // P9. Happy Birthday
+  () => (
+    <div className="sl-body sl-cover">
+      <div className="sl-ph sl-ph-icon">🎂 蛋糕 icon 待補</div>
+      <h1 className="sl-title">Happy Birthday</h1>
+    </div>
+  ),
+
+  // P10. 大合照時間
+  () => (
+    <div className="sl-body sl-cover">
+      <div className="sl-ph sl-ph-icon">📷 相機 icon 待補</div>
+      <h2 className="sl-h2">大合照時間</h2>
+    </div>
+  ),
+
+  // P11. Thank you
   () => (
     <div className="sl-body sl-cover">
       <div className="sl-kicker">See you there</div>
       <h1 className="sl-title sl-thanks">謝謝大家</h1>
-      <p className="sl-lead">6/26，M310 見。<br />帶著故事來，帶著祝福走。</p>
+      <p className="sl-lead">期待下次再相見！</p>
       <div className="sl-host">— {config.host}</div>
     </div>
   ),
@@ -105,12 +162,12 @@ export default function Slides() {
     if (view !== 'present') prevViewRef.current = view
     setI(Math.max(0, Math.min(last, n)))
     setView('present')
-    document.documentElement.requestFullscreen?.().catch(() => {})
+    document.documentElement.requestFullscreen?.().catch(() => { })
   }, [view, last])
 
   const exitPresent = useCallback(() => {
     setView(prevViewRef.current || 'grid')
-    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {})
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => { })
   }, [])
 
   // 全螢幕被使用者用 ESC / 系統手勢關掉時，同步退出 present

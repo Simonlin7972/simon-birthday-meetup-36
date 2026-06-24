@@ -2434,11 +2434,11 @@ body::after {
   margin-top: 1cqh;
 }
 .sl-av {
-  width: 13cqh;
-  height: 13cqh;
+  width: 9.5cqh;
+  height: 9.5cqh;
   border: none;
   box-shadow: none;
-  font-size: 4cqh;
+  font-size: 3.2cqh;
 }
 
 /* 引言 */
@@ -2448,6 +2448,71 @@ body::after {
   color: var(--ink);
   border-left: 4px solid var(--gold);
   padding-left: 3cqw;
+}
+
+/* 缺圖 placeholder 框：虛線框 + 置中提示。之後換成 <img> 即可。
+   尺寸用 cqh/cqw，縮圖與全螢幕等比縮放。 */
+.sl-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px dashed var(--gold);
+  border-radius: 4cqh;
+  background: var(--surface2);
+  color: var(--faint);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 2.6cqh;
+  letter-spacing: .04em;
+}
+.sl-ph-qr   { width: 34cqh; height: 34cqh; margin: 1cqh auto; }
+.sl-ph-ui   { width: 46cqh; height: 34cqh; margin: 1cqh auto; }
+.sl-ph-icon { width: 26cqh; height: 26cqh; margin: 0 auto 2cqh; border-radius: 50%; font-size: 2.4cqh; }
+
+/* Agenda 時間軸：左欄時間（Orbitron / 橘）、右欄描述，dashed 分隔 */
+.sl-agenda { display: flex; flex-direction: column; gap: 2cqh; margin-top: 1cqh; }
+.sl-agenda-row {
+  display: flex;
+  align-items: baseline;
+  gap: 3cqw;
+  padding-bottom: 2cqh;
+  border-bottom: 1px dashed var(--line2);
+}
+.sl-agenda-time {
+  flex-shrink: 0;
+  width: 26cqw;
+  font-family: 'Orbitron', var(--sans);
+  font-weight: 700;
+  font-size: 3.4cqh;
+  letter-spacing: .02em;
+  color: var(--gold);
+}
+.sl-agenda-desc {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 3.4cqh;
+  color: var(--ink);
+}
+
+/* 密碼提示 pill：說明 + 醒目密碼 */
+.sl-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.4cqw;
+  margin: 1cqh auto 0;
+  padding: 1.8cqh 4cqw;
+  border-radius: 6cqh;
+  background: var(--surface2);
+  border: 2px solid var(--ink-line);
+}
+.sl-pass-label { font-size: 2.6cqh; color: var(--muted); }
+.sl-pass-code {
+  font-family: 'Orbitron', var(--sans);
+  font-weight: 700;
+  font-size: 4cqh;
+  letter-spacing: .06em;
+  color: var(--gold);
 }
 
 /* 點點導覽 */
