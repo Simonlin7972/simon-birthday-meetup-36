@@ -1,6 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { config, people } from '../data/payload'
 import Avatar from './Avatar'
+import gateShot from '../asset/slide_gate.png'
+import bingoShot from '../asset/slide_bingo.png'
+
+// P4 Gate / P5 Bingo 直接放實際截圖（.slm-shot 用 cqh，縮圖 / present 同步縮放）。
+function GateMock() {
+  return <img className="slm-shot" src={gateShot} alt="PIN 入場畫面" draggable="false" />
+}
+function BingoMock() {
+  return <img className="slm-shot" src={bingoShot} alt="賓果遊戲畫面" draggable="false" />
+}
 
 // 簡報 deck：網址 /slides 或 ?slides 進入（見 App.jsx），跳過 Splash / Gate。
 // 三種檢視：grid 格狀總覽（預設）/ list 列表總覽 / present 全螢幕簡報。
@@ -10,6 +20,7 @@ import Avatar from './Avatar'
 //   → 朋友分享 → 蛋糕 → 大合照 → 感謝。（編號沿用 P1–P11 但無 P7。）
 // 內容都是純文字 / placeholder，之後直接改這個檔案即可。縮圖直接縮放真實卡片（cqh/cqw 自動縮放）。
 // 缺圖頁先放 .sl-ph placeholder 框；之後丟圖進 src/asset/ 再把框換成 <img>。
+
 
 // 每頁一個物件，render 回傳該頁主體。改文案改這裡。
 const slides = [
@@ -28,14 +39,14 @@ const slides = [
 
   // P2. 今天的來賓
   () => (
-    <div className="sl-body">
-      <h2 className="sl-h2">歡迎各位參加今天的活動！</h2>
-      <p className="sl-lead">大學同學、前同事、設計圈好朋友、創業/社群夥伴</p>
-      <div className="sl-avatars">
+    <div className="sl-guests-page">
+      <h2 className="sl-h2" style={{ textAlign: 'center', padding: '3cqh 0 1.5cqh' }}>歡迎大家參加今天的活動！</h2>
+      <div className="sl-av-grid">
         {people.map((p) => (
           <Avatar key={p.id} person={p} className="sl-av" />
         ))}
       </div>
+      <p className="sl-lead" style={{ textAlign: 'center', padding: '1.5cqh 0' }}>大學同學、前同事、設計圈好朋友、創業/社群夥伴</p>
     </div>
   ),
 
@@ -72,11 +83,11 @@ const slides = [
   () => (
     <div className="sl-body sl-split">
       <div className="sl-split-text">
-        <h2 className="sl-h2">用這個 App<br />體驗今天的活動</h2>
+        <h2 className="sl-h2">用這個 APP 來<br />體驗今天的活動</h2>
         <p className="sl-lead">登入方式：使用你手上的 PIN 碼</p>
       </div>
       <div className="sl-split-media">
-        <div className="sl-ph sl-ph-qr">QR Code 待上傳</div>
+        <GateMock />
       </div>
     </div>
   ),
@@ -92,7 +103,7 @@ const slides = [
         </div>
       </div>
       <div className="sl-split-media">
-        <div className="sl-ph sl-ph-ui">賓果遊戲 UI 圖待上傳</div>
+        <BingoMock />
       </div>
     </div>
   ),
