@@ -15,8 +15,7 @@ import Avatar from './Avatar'
 const slides = [
   // P1. 封面
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-kicker">{config.subtitle}</div>
+    <div className="sl-body">
       <h1 className="sl-title">{config.title}</h1>
       <h2 className="sl-title2">{config.title2}</h2>
       <p className="sl-lead">
@@ -43,7 +42,6 @@ const slides = [
   // P3. Agenda
   () => (
     <div className="sl-body">
-      <div className="sl-kicker">Agenda</div>
       <h2 className="sl-h2">今天活動的流程</h2>
       <div className="sl-agenda">
         <div className="sl-agenda-row">
@@ -72,44 +70,52 @@ const slides = [
 
   // P4. 打開今天活動 App
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-kicker">Let's go</div>
-      <h2 className="sl-h2">用這個 App 體驗今天的活動</h2>
-      <div className="sl-ph sl-ph-qr">QR Code 待上傳</div>
-      <p className="sl-lead">登入方式：使用你手上的 PIN 碼</p>
+    <div className="sl-body sl-split">
+      <div className="sl-split-text">
+        <h2 className="sl-h2">用這個 App<br />體驗今天的活動</h2>
+        <p className="sl-lead">登入方式：使用你手上的 PIN 碼</p>
+      </div>
+      <div className="sl-split-media">
+        <div className="sl-ph sl-ph-qr">QR Code 待上傳</div>
+      </div>
     </div>
   ),
 
   // P5. 賓果遊戲時間
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-kicker">Game time</div>
-      <h2 className="sl-h2">賓果遊戲時間</h2>
-      <div className="sl-ph sl-ph-ui">賓果遊戲 UI 圖待上傳</div>
-      <div className="sl-pass">
-        <span className="sl-pass-label">輸入 Simon 的生日當作密碼</span>
-        <span className="sl-pass-code">0702</span>
+    <div className="sl-body sl-split">
+      <div className="sl-split-text">
+        <h2 className="sl-h2">賓果遊戲時間</h2>
+        <div className="sl-pass">
+          <span className="sl-pass-label">輸入 Simon 的生日當作密碼</span>
+          <span className="sl-pass-code">0702</span>
+        </div>
+      </div>
+      <div className="sl-split-media">
+        <div className="sl-ph sl-ph-ui">賓果遊戲 UI 圖待上傳</div>
       </div>
     </div>
   ),
 
   // P6. 悄悄話
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-kicker">Psst…</div>
-      <h2 className="sl-h2">Simon 想和大家說的悄悄話</h2>
-      <div className="sl-ph sl-ph-ui">悄悄話頁面 UI 圖待上傳</div>
-      <div className="sl-pass">
-        <span className="sl-pass-label">密碼</span>
-        <span className="sl-pass-code">PIN 碼反著打</span>
+    <div className="sl-body sl-split">
+      <div className="sl-split-text">
+        <h2 className="sl-h2">Simon 想和大家<br />說的悄悄話</h2>
+        <div className="sl-pass">
+          <span className="sl-pass-label">密碼</span>
+          <span className="sl-pass-code">PIN 碼反著打</span>
+        </div>
+      </div>
+      <div className="sl-split-media">
+        <div className="sl-ph sl-ph-ui">悄悄話頁面 UI 圖待上傳</div>
       </div>
     </div>
   ),
 
   // P8. 朋朋們的分享時間
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-kicker">Share</div>
+    <div className="sl-body">
       <h2 className="sl-h2">好朋友們的<br />分享時間</h2>
       <p className="sl-lead">把麥克風交給你們，說說我們之間的故事。</p>
     </div>
@@ -117,24 +123,31 @@ const slides = [
 
   // P9. Happy Birthday
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-ph sl-ph-icon">🎂 蛋糕 icon 待補</div>
-      <h1 className="sl-title">Happy Birthday</h1>
+    <div className="sl-body sl-split">
+      <div className="sl-split-text">
+        <h1 className="sl-title">Happy<br />Birthday</h1>
+      </div>
+      <div className="sl-split-media">
+        <div className="sl-ph sl-ph-icon">🎂 蛋糕 icon 待補</div>
+      </div>
     </div>
   ),
 
   // P10. 大合照時間
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-ph sl-ph-icon">📷 相機 icon 待補</div>
-      <h2 className="sl-h2">大合照時間</h2>
+    <div className="sl-body sl-split">
+      <div className="sl-split-text">
+        <h2 className="sl-h2">大合照時間</h2>
+      </div>
+      <div className="sl-split-media">
+        <div className="sl-ph sl-ph-icon">📷 相機 icon 待補</div>
+      </div>
     </div>
   ),
 
   // P11. Thank you
   () => (
-    <div className="sl-body sl-cover">
-      <div className="sl-kicker">See you there</div>
+    <div className="sl-body">
       <h1 className="sl-title sl-thanks">謝謝大家</h1>
       <p className="sl-lead">期待下次再相見！</p>
       <div className="sl-host">— {config.host}</div>

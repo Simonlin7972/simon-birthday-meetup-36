@@ -2352,6 +2352,7 @@ body::after {
   position: relative;
   z-index: 1;
   width: 100%;
+  max-width: 64cqw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2369,23 +2370,23 @@ body::after {
 
 .sl-title {
   font-family: var(--serif);
-  font-size: 9cqh;
-  line-height: 1.08;
+  font-size: 12cqh;
+  line-height: 1.05;
   color: var(--ink);
 }
 .sl-title2 {
   font-family: var(--sans);
   font-weight: 700;
-  font-size: 4.6cqh;
+  font-size: 5.4cqh;
   color: var(--muted);
 }
-.sl-thanks { font-size: 10cqh; color: var(--rose); }
+.sl-thanks { font-size: 13cqh; color: var(--rose); }
 
 .sl-h2 {
   font-family: var(--sans);
   font-weight: 700;
-  font-size: 6.4cqh;
-  line-height: 1.2;
+  font-size: 8.4cqh;
+  line-height: 1.15;
   color: var(--ink);
 }
 
@@ -2466,9 +2467,27 @@ body::after {
   font-size: 2.6cqh;
   letter-spacing: .04em;
 }
-.sl-ph-qr   { width: 34cqh; height: 34cqh; margin: 1cqh auto; }
-.sl-ph-ui   { width: 46cqh; height: 34cqh; margin: 1cqh auto; }
-.sl-ph-icon { width: 26cqh; height: 26cqh; margin: 0 auto 2cqh; border-radius: 50%; font-size: 2.4cqh; }
+.sl-ph-qr   { width: 38cqh; height: 38cqh; }
+.sl-ph-ui   { width: 100%; max-width: 52cqh; aspect-ratio: 4 / 3; height: auto; }
+.sl-ph-icon { width: 30cqh; height: 30cqh; border-radius: 50%; font-size: 2.4cqh; }
+
+/* 2-column 版型：左大標題、右圖（P4/P5/P6/P9/P10）。左對齊編輯感。 */
+.sl-split { flex-direction: row; align-items: center; gap: 6cqw; max-width: none; }
+.sl-split-text {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.6cqh;
+  text-align: left;
+}
+.sl-split-media {
+  flex: 0 0 42cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Agenda 時間軸：左欄時間（Orbitron / 橘）、右欄描述，dashed 分隔 */
 .sl-agenda { display: flex; flex-direction: column; gap: 2cqh; margin-top: 1cqh; }
@@ -2499,8 +2518,9 @@ body::after {
 .sl-pass {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 2.4cqw;
-  margin: 1cqh auto 0;
+  margin: 1cqh 0 0;
   padding: 1.8cqh 4cqw;
   border-radius: 6cqh;
   background: var(--surface2);
