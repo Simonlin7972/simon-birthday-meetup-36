@@ -2317,11 +2317,12 @@ body::after {
 .slides {
   position: fixed;
   inset: 0;
-  z-index: 3;
+  z-index: 5; /* 疊在總覽 .slides-viewer(z3) 上層 */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
+  background: var(--bg); /* 不透明，完全蓋住底下的總覽 */
 }
 
 .sl-stage {
@@ -2552,11 +2553,17 @@ body::after {
   overflow: hidden; /* y-scroll 交給 .sl-overview，自身不產生捲動/溢位 */
 }
 
-/* 右上工具列：列表/格狀切換 + 全螢幕模式 */
+/* 右上工具列：列表/格狀切換 + 全螢幕模式。
+   用 position:absolute 釘在 viewer 右上角，脫離 flex 流。原因：留在 flex column
+   流內時，退出原生全螢幕後 Chromium 會給這個 in-flow 子元素一個隨機水平位移
+   （實測 left 變成 41~757px 不等）導致跑版；fixed 的 viewer 本身位置正常，故改用
+   絕對定位錨在 viewer 右上即可免疫。空間由 .sl-overview 的 padding-top 預留。 */
 .sl-toolbar {
-  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 6;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: 12px;
   padding: calc(env(safe-area-inset-top) + 16px) 24px 14px;
@@ -2604,12 +2611,12 @@ body::after {
 }
 .sl-fs-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--btn-edge); }
 
-/* 捲動容器 */
+/* 捲動容器。padding-top 預留絕對定位 toolbar 的高度。 */
 .sl-overview {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 8px 24px calc(40px + var(--safe-b));
+  padding: calc(env(safe-area-inset-top) + 84px) 24px calc(40px + var(--safe-b));
 }
 
 /* 列表：直向單欄堆疊 */

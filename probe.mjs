@@ -1,11 +1,11 @@
 import puppeteer from 'puppeteer-core';
-const b = await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless:true, userDataDir:'/tmp/cprofile', args:['--no-sandbox']});
+const b = await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless:false, userDataDir:'/tmp/cprofile2', args:['--no-sandbox','--window-size=1440,900']});
 const p = await b.newPage();
-await p.setViewport({width:1680,height:1050});
 await p.goto('http://localhost:5174/simon-birthday-meetup-36/?slides',{waitUntil:'networkidle0'});
-await p.evaluate(()=>{ [...document.querySelectorAll('.sl-seg-btn')].find(b=>b.textContent.includes('列表')).click(); });
-await new Promise(r=>setTimeout(r,400));
-const m = await p.evaluate(()=>({thumbW:Math.round(document.querySelector('.sl-thumb').getBoundingClientRect().width), thumbH:Math.round(document.querySelector('.sl-thumb').getBoundingClientRect().height), docW:document.documentElement.scrollWidth, winW:window.innerWidth}));
-console.log('LIST',JSON.stringify(m));
-await p.screenshot({path:'/tmp/fix_list.png'});
+await p.click('.sl-fs-btn');
+await new Promise(r=>setTimeout(r,900));
+await p.screenshot({path:'/tmp/present_mode.png'});  // present overlay (should be opaque, cover overview)
+await p.keyboard.press('Escape');
+await new Promise(r=>setTimeout(r,1200));
+await p.screenshot({path:'/tmp/overview_after.png'}); // overview after exit
 await b.close();

@@ -98,11 +98,14 @@ export default function Slides() {
   const prev = useCallback(() => go(i - 1), [go, i])
 
   // 進入簡報：記住目前頁，切到 present，並要求真・全螢幕（不支援則降級為頁內 overlay）
+  // 對 documentElement（穩定、永不卸載）要求全螢幕，而非對切換時會被卸載的
+  // .slides-viewer / .slides 節點——否則退出全螢幕時被卸載的「全螢幕元素」會讓
+  // Chromium 殘留錯誤的版面位移（toolbar 退出後跑版）。
   const enterPresent = useCallback((n) => {
     if (view !== 'present') prevViewRef.current = view
     setI(Math.max(0, Math.min(last, n)))
     setView('present')
-    containerRef.current?.requestFullscreen?.().catch(() => {})
+    document.documentElement.requestFullscreen?.().catch(() => {})
   }, [view, last])
 
   const exitPresent = useCallback(() => {
@@ -159,79 +162,84 @@ export default function Slides() {
     return () => { window.removeEventListener('pointermove', onMove); clearTimeout(hideId) }
   }, [presenting])
 
-  // ===== 簡報模式 =====
-  if (presenting) {
-    const Slide = slides[i]
-    return (
-      <div className="slides" ref={containerRef} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-        <div className="sl-cursor" ref={cursorRef} />
-        <div className="sl-stage">
-          <div className="sl-card" key={i}>
-            <Slide />
+  const PresentSlide = slides[i]
+
+  // 總覽永遠掛載，present 以 overlay 疊在上層 —— 不做分支切換（不卸載/重掛總覽）。
+  // 原因：退出原生全螢幕的轉場期間若 React 重建總覽 DOM，新節點會繼承到 Chromium
+  // 殘留的錯誤版面（fixed 容器的 containing block 尚未 reflow），導致 toolbar 跑版。
+  // 實測：總覽全程不被卸載時，全螢幕進出 12/12 皆正常。present overlay 本身進出不影響。
+  return (
+    <>
+      {/* ===== 總覽：列表 / 格狀（永遠掛載）===== */}
+      <div className="slides-viewer" ref={containerRef}>
+        <div className="sl-toolbar">
+          <div className="sl-seg" role="tablist" aria-label="檢視模式">
+            <button
+              className={`sl-seg-btn${view === 'list' ? ' on' : ''}`}
+              onClick={() => setView('list')}
+              role="tab" aria-selected={view === 'list'}
+            >列表</button>
+            <button
+              className={`sl-seg-btn${view === 'grid' ? ' on' : ''}`}
+              onClick={() => setView('grid')}
+              role="tab" aria-selected={view === 'grid'}
+            >格狀</button>
+          </div>
+          <button className="sl-fs-btn" onClick={() => enterPresent(i)}>
+            全螢幕模式
+          </button>
+        </div>
+
+        <div className="sl-overview">
+          <div className={`sl-deck sl-${view}`}>
+            {slides.map((Slide, n) => (
+              <div className="sl-tile" key={n}>
+                <div className="sl-tile-label">PAGE {n + 1}</div>
+                <button
+                  className="sl-thumb"
+                  onClick={() => enterPresent(n)}
+                  aria-label={`簡報第 ${n + 1} 頁`}
+                >
+                  <div className="sl-card">
+                    <Slide />
+                  </div>
+                </button>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* 點點導覽 */}
-        <div className="sl-dots">
-          {slides.map((_, n) => (
-            <button
-              key={n}
-              className={`sl-dot${n === i ? ' on' : ''}`}
-              onClick={() => go(n)}
-              aria-label={`第 ${n + 1} 頁`}
-            />
-          ))}
-        </div>
-
-        {/* 左右點擊區 */}
-        <button className="sl-nav sl-prev" onClick={prev} disabled={i === 0} aria-label="上一頁" />
-        <button className="sl-nav sl-next" onClick={next} disabled={i === last} aria-label="下一頁" />
-
-        <button className="sl-exit" onClick={exitPresent} aria-label="退出簡報">✕</button>
-        <div className="sl-page">{i + 1} / {slides.length}</div>
-      </div>
-    )
-  }
-
-  // ===== 總覽：列表 / 格狀 =====
-  return (
-    <div className="slides-viewer" ref={containerRef}>
-      <div className="sl-toolbar">
-        <div className="sl-seg" role="tablist" aria-label="檢視模式">
-          <button
-            className={`sl-seg-btn${view === 'list' ? ' on' : ''}`}
-            onClick={() => setView('list')}
-            role="tab" aria-selected={view === 'list'}
-          >列表</button>
-          <button
-            className={`sl-seg-btn${view === 'grid' ? ' on' : ''}`}
-            onClick={() => setView('grid')}
-            role="tab" aria-selected={view === 'grid'}
-          >格狀</button>
-        </div>
-        <button className="sl-fs-btn" onClick={() => enterPresent(i)}>
-          全螢幕模式
-        </button>
       </div>
 
-      <div className="sl-overview">
-        <div className={`sl-deck sl-${view}`}>
-          {slides.map((Slide, n) => (
-            <div className="sl-tile" key={n}>
-              <div className="sl-tile-label">PAGE {n + 1}</div>
-              <button
-                className="sl-thumb"
-                onClick={() => enterPresent(n)}
-                aria-label={`簡報第 ${n + 1} 頁`}
-              >
-                <div className="sl-card">
-                  <Slide />
-                </div>
-              </button>
+      {/* ===== 簡報 overlay（疊在總覽上層）===== */}
+      {presenting && (
+        <div className="slides" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+          <div className="sl-cursor" ref={cursorRef} />
+          <div className="sl-stage">
+            <div className="sl-card" key={i}>
+              <PresentSlide />
             </div>
-          ))}
+          </div>
+
+          {/* 點點導覽 */}
+          <div className="sl-dots">
+            {slides.map((_, n) => (
+              <button
+                key={n}
+                className={`sl-dot${n === i ? ' on' : ''}`}
+                onClick={() => go(n)}
+                aria-label={`第 ${n + 1} 頁`}
+              />
+            ))}
+          </div>
+
+          {/* 左右點擊區 */}
+          <button className="sl-nav sl-prev" onClick={prev} disabled={i === 0} aria-label="上一頁" />
+          <button className="sl-nav sl-next" onClick={next} disabled={i === last} aria-label="下一頁" />
+
+          <button className="sl-exit" onClick={exitPresent} aria-label="退出簡報">✕</button>
+          <div className="sl-page">{i + 1} / {slides.length}</div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   )
 }
