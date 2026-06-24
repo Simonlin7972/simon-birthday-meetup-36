@@ -84,7 +84,7 @@ const slides = [
     <div className="sl-body sl-split">
       <div className="sl-split-text">
         <h2 className="sl-h2">用這個 APP 來<br />體驗今天的活動</h2>
-        <p className="sl-lead">登入方式：使用你手上的 PIN 碼</p>
+        <p className="sl-lead">登入方式：<span className="sl-hl">使用你手上的 PIN 碼</span></p>
       </div>
       <div className="sl-split-media">
         <GateMock />

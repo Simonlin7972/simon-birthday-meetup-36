@@ -2735,6 +2735,16 @@ body::after {
   justify-content: center;
 }
 
+/* 反白螢光標記：橘底白字（P4 PIN 提示） */
+.sl-hl {
+  background: var(--gold);
+  color: var(--btn-ink);
+  padding: .3cqh 1.2cqh;
+  border-radius: 1.4cqh;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 /* ===== 簡報內手機 UI 截圖（P4 Gate / P5 Bingo）。.slm-shot 用 cqh，縮圖與 present 同步縮放 ===== */
 .slm-shot {
   height: 86cqh;
@@ -2785,10 +2795,7 @@ body::after {
   align-self: flex-start;
   gap: 2.4cqw;
   margin: 1cqh 0 0;
-  padding: 1.8cqh 4cqw;
-  border-radius: 6cqh;
-  background: var(--surface2);
-  border: 2px solid var(--ink-line);
+  padding: 1.8cqh 0;
 }
 
 .sl-pass-label {
@@ -2801,7 +2808,10 @@ body::after {
   font-weight: 700;
   font-size: 4cqh;
   letter-spacing: .06em;
-  color: var(--gold);
+  color: var(--btn-ink);
+  background: var(--gold);
+  padding: .6cqh 2cqw;
+  border-radius: 1.6cqh;
 }
 
 /* 點點導覽 */
@@ -2853,6 +2863,12 @@ body::after {
 
 .sl-nav:disabled {
   cursor: default;
+}
+
+/* present 時點擊導覽鈕殘留的瀏覽器 focus 框（藍框）—移除 */
+.sl-nav:focus,
+.sl-nav:focus-visible {
+  outline: none;
 }
 
 /* 頁碼 */
