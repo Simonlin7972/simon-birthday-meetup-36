@@ -131,7 +131,7 @@ export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying 
   }, [cells, order, storageKey])
 
   const completedLines = LINES.filter(line => line.every(i => cells[i]))
-  const isBingo = completedLines.length >= 2
+  const isBingo = completedLines.length >= 3
   const inLineSet = new Set(completedLines.flat())
 
   useEffect(() => {
@@ -175,7 +175,7 @@ export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying 
         <div className="msg-gate">
           <img src={illustrationBingo} alt="" className="msg-gate-illust" />
           <div className="msg-gate-title">派對賓果</div>
-          <div className="bingo-gate-desc">和現場朋友互動，完成任務連成兩條線就 BINGO！輸入通關密碼開始遊戲。</div>
+          <div className="bingo-gate-desc">和現場朋友互動，完成任務連成三條線就 BINGO！輸入通關密碼開始遊戲。</div>
           <div className={`code-boxes${shake ? ' shake' : ''}`}>
             {digits.map((d, i) => (
               <input
@@ -207,7 +207,7 @@ export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying 
       <div className="bingo-status">
         <span>{completedCount}/9 完成</span>
         <span className="bingo-status-dot" />
-        <span>{completedLines.length}/2 條線</span>
+        <span>{completedLines.length}/3 條線</span>
         {isBingo && (
           <button className="bingo-replay" onClick={() => setShowBingo(true)}>
             BINGO!
@@ -281,7 +281,7 @@ export default function Bingo({ me, onPlayingChange = () => { }, previewPlaying 
           </div>
           <div className="bingo-celebrate-card">
             <div className="bingo-celebrate-title">BINGO!</div>
-            <div className="bingo-celebrate-msg">恭喜完成兩條線！</div>
+            <div className="bingo-celebrate-msg">恭喜完成三條線！</div>
             <div className="bingo-celebrate-hint">點擊任意處關閉</div>
           </div>
         </div>
